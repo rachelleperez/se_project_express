@@ -19,17 +19,26 @@ const createUser = (req, res) => {
 
 const getUsers = (req, res) => {
   user
-    .find({})
+    .orFail()
     .then((users) => res.status(200).send(users))
-    .catch((e) => res.status(500).send({ message: "Error from getUsers", e }));
+    .catch((e) => res.status(500).send({ message: "Error from getUser", e }));
 };
 
 const getUser = (req, res) => {
   user
     .findById(itemId)
-    .orFail()
+    .orFail(() => {
+      const error = new Error("ID not found");
+      error.statusCode = 400; // Bad Request
+      throw error;
+    })
     .then((user) => res.status(200).send(user))
-    .catch((e) => res.status(500).send({ message: "Error from getUsers", e }));
+    .catch((e) => {
+      if (e.statusCode === 400) {
+        res.send({ message: e.message });
+      }
+      res.status(500).send({ message: "Error from getUsers", e });
+    });
 };
 
 module.exports = {

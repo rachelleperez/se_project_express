@@ -24,33 +24,47 @@ const getItems = (req, res) => {
     .catch((e) => res.status(500).send({ message: "Error from getItems", e }));
 };
 
-const updateItem = (req, res) => {
-  const { itemId } = req.params; // part of URL
-  const { imageURL } = req.body;
-  clothingItem
-    .findByIdAndUpdate(itemId, { $set: { imageURL } })
-    .orFail() // throws error if not found. else return null and goes into then()
-    .then((item) => res.status(200).send({ data: item }))
-    .catch((e) =>
-      res.status(500).send({ message: "Error from updateItem", e }),
-    );
-};
+// const updateItem = (req, res) => {
+//   const { itemId } = req.params; // part of URL
+//   const { imageURL } = req.body;
+//   clothingItem
+//     .findByIdAndUpdate(itemId, { $set: { imageURL } })
+//     .orFail(() => {
+//       const error = new Error("ID not found");
+//       error.statusCode = 400; // Bad Request
+//       throw error;
+//     })
+//     .then((item) => res.status(200).send({ data: item }))
+//     .catch((e) => {
+//       if (e.statusCode === 400) {
+//         res.send({ message: e.message });
+//       }
+//       res.status(500).send({ message: "Error from deleteItem", e });
+//     });
+// };
 
 const deleteItem = (req, res) => {
   const { itemId } = req.params;
   // console.log(itemId);
   clothingItem
     .findByIdAndDelete(itemId)
-    .orFail()
+    .orFail(() => {
+      const error = new Error("ID not found");
+      error.statusCode = 400; // Bad Request
+      throw error;
+    })
     .then((item) => res.status(204).send({})) // 204 = completed
-    .catch((e) =>
-      res.status(500).send({ message: "Error from deleteItem", e }),
-    );
+    .catch((e) => {
+      if (e.statusCode === 400) {
+        res.send({ message: e.message });
+      }
+      res.status(500).send({ message: "Error from deleteItem", e });
+    });
 };
 
 module.exports = {
   createItem,
   getItems,
-  updateItem,
+  // updateItem,
   deleteItem,
 };
