@@ -1,5 +1,4 @@
 const clothingItem = require("../models/clothingItem");
-const ClothingItem = require("../models/clothingItem");
 
 const createItem = (req, res) => {
   // console.log(req);
@@ -7,7 +6,8 @@ const createItem = (req, res) => {
 
   const { name, weather, imageURL } = req.body;
 
-  ClothingItem.create({ name, weather, imageURL })
+  clothingItem
+    .create({ name, weather, imageURL })
     .then((item) => {
       console.log(item);
       res.send({ data: item });
@@ -18,7 +18,8 @@ const createItem = (req, res) => {
 };
 
 const getItems = (req, res) => {
-  ClothingItem.find({})
+  clothingItem
+    .find({})
     .then((items) => res.status(200).send(items))
     .catch((e) => res.status(500).send({ message: "Error from getItems", e }));
 };
