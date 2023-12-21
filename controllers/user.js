@@ -1,6 +1,6 @@
 const user = require("../models/user");
 
-const createUser = (req, res) => {
+module.exports.createUser = (req, res) => {
   // console.log(req);
   console.log(req.body);
 
@@ -17,14 +17,14 @@ const createUser = (req, res) => {
     });
 };
 
-const getUsers = (req, res) => {
+module.exports.getUsers = (req, res) => {
   user
     .orFail()
     .then((users) => res.status(200).send(users))
     .catch((e) => res.status(500).send({ message: "Error from getUser", e }));
 };
 
-const getUser = (req, res) => {
+module.exports.getUser = (req, res) => {
   user
     .findById(itemId)
     .orFail(() => {
@@ -41,8 +41,8 @@ const getUser = (req, res) => {
     });
 };
 
-module.exports = {
-  getUser,
-  getUsers,
-  createUser,
-};
+// module.exports = {
+//   getUser,
+//   getUsers,
+//   createUser,
+// };

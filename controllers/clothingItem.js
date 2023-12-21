@@ -1,30 +1,33 @@
 const clothingItem = require("../models/clothingItem");
 
-const createItem = (req, res) => {
+module.exports.createClothingItem = (req, res) => {
+  console.log("reached createClothingItem");
   // console.log(req);
   console.log(req.body);
-
+  console.log(req.user);
   const { name, weather, imageURL } = req.body;
 
   clothingItem
-    .create({ name, weather, imageURL })
+    .create({ name, weather, imageURL, owner: req.user._id })
     .then((item) => {
       console.log(item);
       res.send({ data: item });
     })
     .catch((e) => {
-      res.status(500).send({ message: "Error from createItem", e });
+      res.status(500).send({ message: "Error from createClothingItem", e });
     });
 };
 
-const getItems = (req, res) => {
+module.exports.getClothingItems = (req, res) => {
   clothingItem
     .find({})
     .then((items) => res.status(200).send(items))
-    .catch((e) => res.status(500).send({ message: "Error from getItems", e }));
+    .catch((e) =>
+      res.status(500).send({ message: "Error from getClothingItems", e }),
+    );
 };
 
-// const updateItem = (req, res) => {
+// module.exports.updateItem = (req, res) => {
 //   const { itemId } = req.params; // part of URL
 //   const { imageURL } = req.body;
 //   clothingItem
@@ -39,11 +42,11 @@ const getItems = (req, res) => {
 //       if (e.statusCode === 400) {
 //         res.send({ message: e.message });
 //       }
-//       res.status(500).send({ message: "Error from deleteItem", e });
+//       res.status(500).send({ message: "Error from deleteClothingItem", e });
 //     });
 // };
 
-const deleteItem = (req, res) => {
+module.exports.deleteClothingItem = (req, res) => {
   const { itemId } = req.params;
   // console.log(itemId);
   clothingItem
@@ -58,13 +61,6 @@ const deleteItem = (req, res) => {
       if (e.statusCode === 400) {
         res.send({ message: e.message });
       }
-      res.status(500).send({ message: "Error from deleteItem", e });
+      res.status(500).send({ message: "Error from deleteClothingItem", e });
     });
-};
-
-module.exports = {
-  createItem,
-  getItems,
-  // updateItem,
-  deleteItem,
 };

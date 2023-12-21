@@ -12,6 +12,15 @@ mongoose
 
 const routes = require("./routes");
 app.use(express.json());
+
+// Temp authorization middleware, hard-coded owner
+app.use((req, res, next) => {
+  req.user = {
+    _id: "6584be40692fff3dc2896eee", // paste the _id of the test user created in the previous step
+  };
+  next();
+});
+
 app.use(routes);
 
 app.listen(PORT, () => {
