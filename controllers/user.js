@@ -29,12 +29,12 @@ module.exports.getUser = (req, res) => {
     .findById(itemId)
     .orFail(() => {
       const error = new Error("User ID not found");
-      error.statusCode = 400; // Bad Request
+      error.statusCode = 404;
       throw error;
     })
     .then((user) => res.status(200).send(user))
     .catch((e) => {
-      if (e.statusCode === 400) {
+      if (e.statusCode === 404) {
         res.send({ message: e.message });
       }
       res.status(500).send({ message: "Error from getUsers", e });

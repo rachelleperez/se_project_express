@@ -34,12 +34,12 @@ module.exports.deleteClothingItem = (req, res) => {
     .findByIdAndDelete(itemId)
     .orFail(() => {
       const error = new Error("Item ID not found");
-      error.statusCode = 400; // Bad Request
+      error.statusCode = 404;
       throw error;
     })
     .then((item) => res.status(204).send({})) // 204 = completed
     .catch((e) => {
-      if (e.statusCode === 400) {
+      if (e.statusCode === 404) {
         res.send({ message: e.message });
       }
       res.status(500).send({ message: "Error from deleteClothingItem", e });
@@ -55,12 +55,12 @@ module.exports.likeClothingItem = (req, res) => {
     )
     .orFail(() => {
       const error = new Error("Item ID not found");
-      error.statusCode = 400; // Bad Request
+      error.statusCode = 404;
       throw error;
     })
     .then((item) => res.status(200).send({ data: item }))
     .catch((e) => {
-      if (e.statusCode === 400) {
+      if (e.statusCode === 404) {
         res.send({ message: e.message });
       }
       res.status(500).send({ message: "Error from deleteClothingItem", e });
@@ -76,12 +76,12 @@ module.exports.dislikeClothingItem = (req, res) => {
     )
     .orFail(() => {
       const error = new Error("Item ID not found");
-      error.statusCode = 400; // Bad Request
+      error.statusCode = 404;
       throw error;
     })
     .then((item) => res.status(200).send({ data: item }))
     .catch((e) => {
-      if (e.statusCode === 400) {
+      if (e.statusCode === 404) {
         res.send({ message: e.message });
       }
       res.status(500).send({ message: "Error from deleteClothingItem", e });
@@ -95,12 +95,12 @@ module.exports.dislikeClothingItem = (req, res) => {
 //     .findByIdAndUpdate(itemId, { $set: { imageURL } })
 //     .orFail(() => {
 //       const error = new Error("ID not found");
-//       error.statusCode = 400; // Bad Request
+//       error.statusCode = 404; // Bad Request
 //       throw error;
 //     })
 //     .then((item) => res.status(200).send({ data: item }))
 //     .catch((e) => {
-//       if (e.statusCode === 400) {
+//       if (e.statusCode === 404) {
 //         res.send({ message: e.message });
 //       }
 //       res.status(500).send({ message: "Error from deleteClothingItem", e });
