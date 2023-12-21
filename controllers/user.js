@@ -28,7 +28,7 @@ module.exports.getUser = (req, res) => {
   user
     .findById(itemId)
     .orFail(() => {
-      const error = new Error("ID not found");
+      const error = new Error("User ID not found");
       error.statusCode = 400; // Bad Request
       throw error;
     })

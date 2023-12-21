@@ -27,6 +27,65 @@ module.exports.getClothingItems = (req, res) => {
     );
 };
 
+module.exports.deleteClothingItem = (req, res) => {
+  const { itemId } = req.params;
+  // console.log(itemId);
+  clothingItem
+    .findByIdAndDelete(itemId)
+    .orFail(() => {
+      const error = new Error("Item ID not found");
+      error.statusCode = 400; // Bad Request
+      throw error;
+    })
+    .then((item) => res.status(204).send({})) // 204 = completed
+    .catch((e) => {
+      if (e.statusCode === 400) {
+        res.send({ message: e.message });
+      }
+      res.status(500).send({ message: "Error from deleteClothingItem", e });
+    });
+};
+
+module.exports.likeClothingItem = (req, res) => {
+  const { itemId } = req.params;
+  const { userId } = req.user._id;
+
+  clothingItem
+    .findByIdAndUpdate(itemId, { $addToSet: { likes: userId } }, { new: true })
+    .orFail(() => {
+      const error = new Error("Item ID not found");
+      error.statusCode = 400; // Bad Request
+      throw error;
+    })
+    .then((item) => res.status(200).send({ data: item }))
+    .catch((e) => {
+      if (e.statusCode === 400) {
+        res.send({ message: e.message });
+      }
+      res.status(500).send({ message: "Error from deleteClothingItem", e });
+    });
+};
+
+module.exports.dislikeClothingItem = (req, res) => {
+  const { itemId } = req.params;
+  const { userId } = req.user._id;
+
+  clothingItem
+    .findByIdAndUpdate(itemId, { $pull: { likes: userId } }, { new: true })
+    .orFail(() => {
+      const error = new Error("Item ID not found");
+      error.statusCode = 400; // Bad Request
+      throw error;
+    })
+    .then((item) => res.status(200).send({ data: item }))
+    .catch((e) => {
+      if (e.statusCode === 400) {
+        res.send({ message: e.message });
+      }
+      res.status(500).send({ message: "Error from deleteClothingItem", e });
+    });
+};
+
 // module.exports.updateItem = (req, res) => {
 //   const { itemId } = req.params; // part of URL
 //   const { imageURL } = req.body;
@@ -45,22 +104,3 @@ module.exports.getClothingItems = (req, res) => {
 //       res.status(500).send({ message: "Error from deleteClothingItem", e });
 //     });
 // };
-
-module.exports.deleteClothingItem = (req, res) => {
-  const { itemId } = req.params;
-  // console.log(itemId);
-  clothingItem
-    .findByIdAndDelete(itemId)
-    .orFail(() => {
-      const error = new Error("ID not found");
-      error.statusCode = 400; // Bad Request
-      throw error;
-    })
-    .then((item) => res.status(204).send({})) // 204 = completed
-    .catch((e) => {
-      if (e.statusCode === 400) {
-        res.send({ message: e.message });
-      }
-      res.status(500).send({ message: "Error from deleteClothingItem", e });
-    });
-};
