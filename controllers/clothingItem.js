@@ -37,7 +37,7 @@ const updateItem = (req, res) => {
 
 const deleteItem = (req, res) => {
   const { itemId } = req.params;
-  console.log(itemId);
+  // console.log(itemId);
   clothingItem
     .findByIdAndDelete(itemId)
     .orFail()
