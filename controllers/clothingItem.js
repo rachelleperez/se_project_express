@@ -47,11 +47,12 @@ module.exports.deleteClothingItem = (req, res) => {
 };
 
 module.exports.likeClothingItem = (req, res) => {
-  const { itemId } = req.params;
-  const { userId } = req.user._id;
-
   clothingItem
-    .findByIdAndUpdate(itemId, { $addToSet: { likes: userId } }, { new: true })
+    .findByIdAndUpdate(
+      req.params.itemId,
+      { $addToSet: { likes: req.user._id } }, // add _id to the array if it's not there yet
+      { new: true },
+    )
     .orFail(() => {
       const error = new Error("Item ID not found");
       error.statusCode = 400; // Bad Request
@@ -67,11 +68,12 @@ module.exports.likeClothingItem = (req, res) => {
 };
 
 module.exports.dislikeClothingItem = (req, res) => {
-  const { itemId } = req.params;
-  const { userId } = req.user._id;
-
   clothingItem
-    .findByIdAndUpdate(itemId, { $pull: { likes: userId } }, { new: true })
+    .findByIdAndUpdate(
+      req.params.itemId,
+      { $pull: { likes: req.user._id } }, // remove _id from the array
+      { new: true },
+    )
     .orFail(() => {
       const error = new Error("Item ID not found");
       error.statusCode = 400; // Bad Request
