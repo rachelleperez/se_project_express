@@ -2,7 +2,7 @@ const clothingItem = require("../models/clothingItem");
 const { HTTP_STATUS, handleRequestError } = require("../utils/errors");
 
 module.exports.createClothingItem = (req, res) => {
-  console.log(arguments[0]);
+  // console.log(arguments[0]);
   console.log(req.body);
 
   const { name, weather, imageURL } = req.body;
