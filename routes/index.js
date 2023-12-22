@@ -9,7 +9,7 @@ router.use("/users", user);
 
 router.use((req, res) => {
   res
-    .status(HTTP_STATUS.InternalServerError)
+    .status(HTTP_STATUS.NotFound) // A middleware for handling an unknown route should return the 404 status code.
     .send({ message: "Requested resource not found" });
 });
 
