@@ -30,7 +30,7 @@ module.exports.deleteClothingItem = (req, res) => {
   clothingItem
     .findByIdAndDelete(itemId)
     .orFail()
-    .then((item) => res.status(HTTP_STATUS.NoContent).send({})) // 204 = completed
+    .then((item) => res.status(HTTP_STATUS.OK).send({ data: item }))
     .catch((e) => handleRequestError(res, e, "deleteClothingItem"));
 };
 
