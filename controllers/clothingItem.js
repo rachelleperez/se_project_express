@@ -17,7 +17,7 @@ module.exports.createClothingItem = (req, res) => {
 };
 
 module.exports.getClothingItems = (req, res) => {
-  console.log("Getting Clothing Items");
+  // console.log("Getting Clothing Items");
   clothingItem
     .find({})
     .then((items) => res.status(HTTP_STATUS.OK).send(items))
