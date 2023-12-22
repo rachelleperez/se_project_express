@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+
 const { PORT = 3001 } = process.env;
 const app = express();
 
@@ -11,6 +12,7 @@ mongoose
   .catch((e) => console.error("DB Error", e));
 
 const routes = require("./routes");
+
 app.use(express.json());
 
 // Temp authorization middleware, hard-coded owner

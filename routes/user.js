@@ -2,9 +2,9 @@ const router = require("express").Router();
 
 const { getUsers, getUser, createUser } = require("../controllers/user");
 
-//CRUD
+// CRUD
 
-//Create
+// Create
 router.post("/", createUser);
 
 // Read

@@ -8,7 +8,7 @@ module.exports.createUser = (req, res) => {
 
   user
     .create({ name, avatar })
-    .then((user) => {
+    .then(() => {
       console.log(user);
       res.status(HTTP_STATUS.Created).send({ data: user });
     })
@@ -26,6 +26,6 @@ module.exports.getUser = (req, res) => {
   user
     .findById(req.params.itemId)
     .orFail()
-    .then((user) => res.status(HTTP_STATUS.OK).send(user))
+    .then(() => res.status(HTTP_STATUS.OK).send(user))
     .catch((e) => handleRequestError(res, e, "getUser"));
 };
