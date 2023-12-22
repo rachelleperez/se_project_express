@@ -5,10 +5,10 @@ module.exports.createClothingItem = (req, res) => {
   // console.log(arguments[0]);
   console.log(req.body);
 
-  const { name, weather, imageURL } = req.body;
+  const { name, weather, imageUrl } = req.body;
 
   clothingItem
-    .create({ name, weather, imageURL, owner: req.user._id })
+    .create({ name, weather, imageUrl, owner: req.user._id })
     .then((item) => {
       console.log(item);
       res.status(HTTP_STATUS.Created).send({ data: item });
@@ -60,9 +60,9 @@ module.exports.dislikeClothingItem = (req, res) => {
 
 // module.exports.updateItem = (req, res) => {
 //   const { itemId } = req.params; // part of URL
-//   const { imageURL } = req.body;
+//   const { imageUrl } = req.body;
 //   clothingItem
-//     .findByIdAndUpdate(itemId, { $set: { imageURL } })
+//     .findByIdAndUpdate(itemId, { $set: { imageUrl } })
 //     .orFail(() => {
 //       const error = new Error("ID not found");
 //       error.statusCode = 404; // Bad Request
