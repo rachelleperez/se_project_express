@@ -1,7 +1,7 @@
 const user = require("../models/user");
+const { HTTP_STATUS, handleRequestError } = require("../utils/errors");
 
 module.exports.createUser = (req, res) => {
-  // console.log(req);
   console.log(req.body);
 
   const { name, avatar } = req.body;
@@ -10,39 +10,22 @@ module.exports.createUser = (req, res) => {
     .create({ name, avatar })
     .then((user) => {
       console.log(user);
-      res.send({ data: user });
+      res.status(HTTP_STATUS.Created).send({ data: user });
     })
-    .catch((e) => {
-      res.status(500).send({ message: "Error from createUser", e });
-    });
+    .catch((e) => handleRequestError(res, e, "createUser"));
 };
 
 module.exports.getUsers = (req, res) => {
   user
     .orFail()
-    .then((users) => res.status(200).send(users))
-    .catch((e) => res.status(500).send({ message: "Error from getUser", e }));
+    .then((users) => res.status(HTTP_STATUS.OK).send(users))
+    .catch((e) => handleRequestError(res, e, "getUsers"));
 };
 
 module.exports.getUser = (req, res) => {
   user
     .findById(itemId)
-    .orFail(() => {
-      const error = new Error("User ID not found");
-      error.statusCode = 404;
-      throw error;
-    })
-    .then((user) => res.status(200).send(user))
-    .catch((e) => {
-      if (e.statusCode === 404) {
-        res.send({ message: e.message });
-      }
-      res.status(500).send({ message: "Error from getUsers", e });
-    });
+    .orFail()
+    .then((user) => res.status(HTTP_STATUS.OK).send(user))
+    .catch((e) => handleRequestError(res, e, "getUser"));
 };
-
-// module.exports = {
-//   getUser,
-//   getUsers,
-//   createUser,
-// };
