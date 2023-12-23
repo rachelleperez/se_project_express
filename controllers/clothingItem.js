@@ -20,7 +20,8 @@ module.exports.getClothingItems = (req, res) => {
   // console.log("Getting Clothing Items");
   clothingItem
     .find({})
-    .then((items) => res.status(HTTP_STATUS.OK).send(items))
+    // .then((items) => res.status(HTTP_STATUS.OK).send(items)) // Status 200 is added by default: https://nodejs.org/en/guides/anatomy-of-an-http-transaction#http-status-code
+    .then((items) => res.send(items))
     .catch((e) => handleRequestError(res, e, "getClothingItems"));
 };
 
@@ -30,7 +31,7 @@ module.exports.deleteClothingItem = (req, res) => {
   clothingItem
     .findByIdAndDelete(itemId)
     .orFail()
-    .then((item) => res.status(HTTP_STATUS.OK).send({ data: item }))
+    .then((item) => res.send({ data: item }))
     .catch((e) => handleRequestError(res, e, "deleteClothingItem"));
 };
 
@@ -42,7 +43,7 @@ module.exports.likeClothingItem = (req, res) => {
       { new: true },
     )
     .orFail()
-    .then((item) => res.status(HTTP_STATUS.OK).send({ data: item }))
+    .then((item) => res.send({ data: item }))
     .catch((e) => handleRequestError(res, e, "likeClothingItem"));
 };
 
@@ -54,6 +55,6 @@ module.exports.dislikeClothingItem = (req, res) => {
       { new: true },
     )
     .orFail()
-    .then((item) => res.status(HTTP_STATUS.OK).send({ data: item }))
+    .then((item) => res.send({ data: item }))
     .catch((e) => handleRequestError(res, e, "dislikeClothingItem"));
 };
