@@ -12,15 +12,15 @@ const HTTP_STATUS = {
 const handleRequestError = (res, err, srcError) => {
   console.error(err);
   if (err.name === "DocumentNotFoundError") {
-    res.status(HTTP_STATUS.NotFound).send({ message: "ID not found", err });
+    res.status(HTTP_STATUS.NotFound).send({ message: "ID not found" });
   } else if (err.name === "ValidationError") {
-    res.status(HTTP_STATUS.BadRequest).send({ message: "Invalid data", err });
+    res.status(HTTP_STATUS.BadRequest).send({ message: "Invalid data" });
   } else if (err.name === "CastError") {
-    res.status(HTTP_STATUS.BadRequest).send({ message: "Invalid ID", err });
+    res.status(HTTP_STATUS.BadRequest).send({ message: "Invalid ID" });
   } else {
     res
       .status(HTTP_STATUS.InternalServerError)
-      .send({ message: `Error from ${srcError}`, err });
+      .send({ message: `Error from ${srcError}` });
   }
 };
 
