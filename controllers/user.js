@@ -9,8 +9,8 @@ module.exports.createUser = (req, res) => {
   user
     .create({ name, avatar })
     .then(() => {
-      console.log(user);
-      res.status(HTTP_STATUS.Created).send({ data: user });
+      console.log(userData);
+      res.status(HTTP_STATUS.Created).send({ data: userData });
     })
     .catch((e) => handleRequestError(res, e, "createUser"));
 };
