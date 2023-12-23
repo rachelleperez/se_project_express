@@ -24,8 +24,8 @@ module.exports.getUsers = (req, res) => {
 
 module.exports.getUser = (req, res) => {
   user
-    .findById(req.params.itemId)
+    .findById(req.params.userId)
     .orFail()
-    .then(() => res.send(user))
+    .then((user) => res.send(user))
     .catch((e) => handleRequestError(res, e, "getUser"));
 };
