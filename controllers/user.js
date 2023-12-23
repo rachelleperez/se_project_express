@@ -8,8 +8,7 @@ module.exports.createUser = (req, res) => {
 
   user
     .create({ name, avatar })
-    .then(() => {
-      console.log(userData);
+    .then((userData) => {
       res.status(HTTP_STATUS.Created).send({ data: userData });
     })
     .catch((e) => handleRequestError(res, e, "createUser"));
