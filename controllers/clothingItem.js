@@ -57,22 +57,3 @@ module.exports.dislikeClothingItem = (req, res) => {
     .then((item) => res.status(HTTP_STATUS.OK).send({ data: item }))
     .catch((e) => handleRequestError(res, e, "dislikeClothingItem"));
 };
-
-// module.exports.updateItem = (req, res) => {
-//   const { itemId } = req.params; // part of URL
-//   const { imageUrl } = req.body;
-//   clothingItem
-//     .findByIdAndUpdate(itemId, { $set: { imageUrl } })
-//     .orFail(() => {
-//       const error = new Error("ID not found");
-//       error.statusCode = 404; // Bad Request
-//       throw error;
-//     })
-//     .then((item) => res.status(200).send({ data: item }))
-//     .catch((e) => {
-//       if (e.statusCode === 404) {
-//         res.send({ message: e.message });
-//       }
-//       res.status(500).send({ message: "Error from deleteClothingItem", e });
-//     });
-// };
