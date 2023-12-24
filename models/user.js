@@ -42,14 +42,14 @@ user.statics.findUserByCredentials = function findUserByCredentials(
   // trying to find the user by email
   return this.findOne({ email }) // this — the User model
     .select("+password") // retrives hidden hash
-    .then((user) => {
+    .then((userData) => {
       // not found - rejecting the promise
-      if (!user) {
+      if (!userData) {
         return Promise.reject(new Error("Incorrect email or password"));
       }
 
       // found - comparing hashes
-      return bcrypt.compare(password, user.password);
+      return bcrypt.compare(password, userData.password);
     });
 };
 
