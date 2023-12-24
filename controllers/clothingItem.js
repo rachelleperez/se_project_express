@@ -36,10 +36,10 @@ module.exports.deleteClothingItem = (req, res) => {
     .findById(itemId)
     .orFail(new Error(ERROR_MSG.unknownItemId))
     // found Item
-    .then((itemData) => {
+    .then((item) => {
       // If user requesting change, items's owner = user authorized to update items
       if (item.owner.equals(req.user._id)) {
-        return itemData.deleteOne().then(res.send({ data: item }));
+        return item.deleteOne().then(res.send({ data: item }));
       }
       // else, this user cannot update item
       return Promise.reject(new Error(ERROR_MSG.forbiddenRequest));
