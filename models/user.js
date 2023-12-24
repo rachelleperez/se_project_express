@@ -31,6 +31,7 @@ const user = new mongoose.Schema({
     type: String,
     required: true,
     minlength: 8,
+    select: false, // hides password, wont be returned by default
   },
 });
 
@@ -42,6 +43,7 @@ user.statics.findUserByCredentials = function findUserByCredentials(
 ) {
   // trying to find the user by email
   return this.findOne({ email }) // this — the User model
+    .select("+password") // retrives hidden hash
     .then((user) => {
       // not found - rejecting the promise
       if (!user) {
