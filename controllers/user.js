@@ -4,10 +4,10 @@ const { HTTP_STATUS, handleRequestError } = require("../utils/errors");
 module.exports.createUser = (req, res) => {
   console.log(req.body);
 
-  const { name, avatar } = req.body;
+  const { name, avatar, email, password } = req.body;
 
   user
-    .create({ name, avatar })
+    .create({ name, avatar, email, password })
     .then((userData) => {
       res.status(HTTP_STATUS.Created).send({ data: userData });
     })
