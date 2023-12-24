@@ -47,13 +47,13 @@ module.exports.getUsers = (req, res) => {
     .catch((e) => handleRequestError(res, e, "getUsers"));
 };
 
-module.exports.getUser = (req, res) => {
-  user
-    .findById(req.params.userId)
-    .orFail()
-    .then((userData) => res.send(userData))
-    .catch((e) => handleRequestError(res, e, "getUser"));
-};
+// module.exports.getUser = (req, res) => {
+//   user
+//     .findById(req.params.userId)
+//     .orFail()
+//     .then((userData) => res.send(userData))
+//     .catch((e) => handleRequestError(res, e, "getUser"));
+// };
 
 module.exports.login = (req, res) => {
   const { email, password } = req.body;
@@ -72,5 +72,16 @@ module.exports.login = (req, res) => {
       // authentication error
       e.message = ERROR_MSG.unathorizedUser;
       handleRequestError(res, e, "login");
+    });
+};
+
+module.exports.getCurrentUser = (req, res) => {
+  user
+    .findById(req.user._id) // as a resul of "req.user = payload" in middleware
+    .orFail()
+    .then((userData) => res.send(userData))
+    .catch((e) => {
+      e.message = ERROR_MSG.unknownUserId;
+      handleRequestError(res, e, "getCurrentUser");
     });
 };

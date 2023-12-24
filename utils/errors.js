@@ -13,12 +13,16 @@ const ERROR_MSG = {
   invalidEmailPassword: "Incorrect email or password",
   unathorizedUser: "Unathorized User",
   authorizationRequired: "Authorization Required",
+  unknownUserId: "Unknown User Id",
 };
 
 // logs error and sends correct status and message
 const handleRequestError = (res, err, srcError) => {
   console.error(err);
-  if (err.name === "DocumentNotFoundError") {
+  if (
+    (err.name === "DocumentNotFoundError") |
+    (err.message === ERROR_MSG.unknownUserId)
+  ) {
     res.status(HTTP_STATUS.NotFound).send({ message: "ID not found" });
   } else if (err.name === "ValidationError") {
     res.status(HTTP_STATUS.BadRequest).send({ message: "Invalid data" });
