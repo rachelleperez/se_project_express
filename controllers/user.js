@@ -2,8 +2,7 @@ const user = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-// temp
-const JWT_SECRET = "temp_secret_key";
+const { JWT_SECRET } = require("../utils/config");
 
 const {
   HTTP_STATUS,

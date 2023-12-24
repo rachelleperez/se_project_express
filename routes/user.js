@@ -1,13 +1,15 @@
 const router = require("express").Router();
 
-const { getUsers, getUser, login, createUser } = require("../controllers/user");
+// NOTE: protect all future routes with auth (only exceptions are signin, signup, and get items)
+
+// const { getUsers, getUser, login, createUser } = require("../controllers/user");
 
 // CRUD
 
 // Create
-app.post("/signin", login);
-app.post("/signup", createUser);
 
 // Read
 // router.get("/", getUsers);
 // router.get("/:userId", getUser);
+
+module.exports = router;

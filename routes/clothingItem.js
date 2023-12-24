@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const auth = require("../middleware/auth");
 
 const {
   createClothingItem,
@@ -11,21 +12,18 @@ const {
 // CRUD
 
 // Create
-router.post("/", createClothingItem);
+router.post("/", auth, createClothingItem);
 
 // Read
-router.get("/", getClothingItems);
-
-// Update
-// router.put("/:itemId", updateItem);
+router.get("/", getClothingItems); // spec: do not protect with auth
 
 // Update: Add like
-router.put("/:itemId/likes", likeClothingItem);
+router.put("/:itemId/likes", auth, likeClothingItem);
 
 // Delete - Clothing Item
-router.delete("/:itemId", deleteClothingItem);
+router.delete("/:itemId", auth, deleteClothingItem);
 
 // Delete - Like
-router.delete("/:itemId/likes", dislikeClothingItem);
+router.delete("/:itemId/likes", auth, dislikeClothingItem);
 
 module.exports = router;
