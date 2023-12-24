@@ -1,6 +1,6 @@
 const router = require("express").Router();
-const clothingItem = require("./clothingItem");
-const user = require("./user");
+const clothingItem = require("./clothingItems");
+const user = require("./users");
 const auth = require("../middlewares/auth");
 
 const { HTTP_STATUS } = require("../utils/errors");

@@ -1,8 +1,9 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
 
 const { PORT = 3001 } = process.env;
-const { login, createUser } = require("./controllers/user");
+const { login, createUser } = require("./controllers/users");
 
 const app = express();
 
@@ -21,6 +22,8 @@ app.post("/signin", login); // spec: do not protect with auth
 app.post("/signup", createUser); // spec: do not protect with auth
 
 app.use(routes);
+
+app.use(cors());
 
 app.listen(PORT, () => {
   console.log(`App listening at port ${PORT}`);
