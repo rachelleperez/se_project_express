@@ -10,5 +10,3 @@ router.post("/", createUser);
 // Read
 router.get("/", getUsers);
 router.get("/:userId", getUser);
-
-module.exports = router;

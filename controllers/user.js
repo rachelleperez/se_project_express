@@ -1,9 +1,14 @@
 const user = require("../models/user");
-const bcrypt = require("bcrypt"); // importing bcrypt
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+
+// temp
+const JWT_SECRET = "temp_secret_key";
+
 const {
   HTTP_STATUS,
   handleRequestError,
-  invalidEmailPasswordMessage,
+  ERROR_MSG,
 } = require("../utils/errors");
 
 module.exports.createUser = (req, res) => {
@@ -15,7 +20,7 @@ module.exports.createUser = (req, res) => {
     .then((userData) => {
       // if email found
       if (userData) {
-        return Promise.reject(new Error(invalidEmailPasswordMessage));
+        return Promise.reject(new Error(ERROR_MSG.invalidEmailPassword));
       }
       // else, new email
       return bcrypt
@@ -49,4 +54,26 @@ module.exports.getUser = (req, res) => {
     .orFail()
     .then((userData) => res.send(userData))
     .catch((e) => handleRequestError(res, e, "getUser"));
+};
+
+// controllers/users.js
+
+module.exports.login = (req, res) => {
+  const { email, password } = req.body;
+
+  return user
+    .findUserByCredentials(email, password)
+    .then((userData) => {
+      // authentication successful!
+      const token = jwt.sign({ _id: userData._id }, JWT_SECRET, {
+        expiresIn: "7d",
+      });
+
+      res.send({ token }); // return the token to client
+    })
+    .catch((e) => {
+      // authentication error
+      e.message = ERROR_MSG.unathorizedUser;
+      handleRequestError(res, e, "login");
+    });
 };

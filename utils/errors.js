@@ -1,17 +1,18 @@
 const HTTP_STATUS = {
-  OK: 200,
-  Created: 201,
-  NoContent: 204, // Accepted, no content sent back
-  Accepted: 202,
-  BadRequest: 400, // Invalid Data Passed
-  Unathorized: 401,
-  NotFound: 404, // Id passed not found
-  Conflict: 409, // Email already in use
-  InternalServerError: 500,
+  OK: 200, // request suceeded, default response status | https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/200
+  Created: 201, // Creation of a resource | https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/201
+  BadRequest: 400, // Invalid Data Passed | https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400
+  Unathorized: 401, // https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+  NotFound: 404, // Id passed not found | https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404
+  Conflict: 409, // Conflict with currrent statue of resource | https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/409
+  InternalServerError: 500, // Internal Server Error, default error | https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
 };
 
-// Error Message(s)
-const invalidEmailPasswordMessage = "Incorrect email or password";
+// error messages declared once here
+const ERROR_MSG = {
+  invalidEmailPassword: "Incorrect email or password",
+  unathorizedUser: "Unathorized User",
+};
 
 // logs error and sends correct status and message
 const handleRequestError = (res, err, srcError) => {
@@ -22,8 +23,10 @@ const handleRequestError = (res, err, srcError) => {
     res.status(HTTP_STATUS.BadRequest).send({ message: "Invalid data" });
   } else if (err.name === "CastError") {
     res.status(HTTP_STATUS.BadRequest).send({ message: "Invalid ID" });
-  } else if (err.message === invalidEmailPasswordMessage) {
+  } else if (err.message === ERROR_MSG.invalidEmailPassword) {
     res.status(HTTP_STATUS.Conflict).send({ message: err.message }); // Email already in use
+  } else if (err.message === ERROR_MSG.unathorizedUser) {
+    res.status(HTTP_STATUS.Unathorized).send({ message: err.message }); // User failed authentication
   } else {
     res
       .status(HTTP_STATUS.InternalServerError)
@@ -34,5 +37,5 @@ const handleRequestError = (res, err, srcError) => {
 module.exports = {
   HTTP_STATUS,
   handleRequestError,
-  invalidEmailPasswordMessage,
+  ERROR_MSG,
 };
