@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const { JWT_SECRET } = require("../utils/config");
+const { ERROR_MSG } = require("../utils/errors");
 
 const {
   HTTP_STATUS,
@@ -83,5 +84,25 @@ module.exports.getCurrentUser = (req, res) => {
     .catch((e) => {
       e.message = ERROR_MSG.unknownUserId;
       handleRequestError(res, e, "getCurrentUser");
+    });
+};
+
+module.exports.updateCurrentUser = (req, res) => {
+  const { name, avatar } = req.body;
+
+  user
+    .findByIdAndUpdate(
+      { __id: req.user_id },
+      { name, avatar },
+      {
+        new: true, // then handler receives updated document
+        runValidators: true, // validate data before update
+      },
+    )
+    .orFail()
+    .then((userData) => res.send(userData))
+    .catch((e) => {
+      if (err.name !== "ValidationError") e.message = ERROR_MSG.unknownUserId; // if not validation error, then user not found
+      handleRequestError(res, e, "updateCurrentUser");
     });
 };
