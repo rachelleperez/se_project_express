@@ -56,8 +56,6 @@ module.exports.getUser = (req, res) => {
     .catch((e) => handleRequestError(res, e, "getUser"));
 };
 
-// controllers/users.js
-
 module.exports.login = (req, res) => {
   const { email, password } = req.body;
 
