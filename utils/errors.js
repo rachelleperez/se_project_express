@@ -4,7 +4,9 @@ const HTTP_STATUS = {
   NoContent: 204, // Accepted, no content sent back
   Accepted: 202,
   BadRequest: 400, // Invalid Data Passed
+  Unathorized: 401,
   NotFound: 404, // Id passed not found
+  Conflict: 409, // Email already in use
   InternalServerError: 500,
 };
 
