@@ -19,10 +19,7 @@ const ERROR_MSG = {
 // logs error and sends correct status and message
 const handleRequestError = (res, err, srcError) => {
   console.error(err);
-  if (
-    (err.name === "DocumentNotFoundError") |
-    (err.message === ERROR_MSG.unknownUserId)
-  ) {
+  if (err.name === "DocumentNotFoundError") {
     res.status(HTTP_STATUS.NotFound).send({ message: "ID not found" });
   } else if (err.name === "ValidationError") {
     res.status(HTTP_STATUS.BadRequest).send({ message: "Invalid data" });
@@ -34,6 +31,8 @@ const handleRequestError = (res, err, srcError) => {
     res.status(HTTP_STATUS.Unathorized).send({ message: err.message }); // User failed authentication
   } else if (err.message === ERROR_MSG.authorizationRequired) {
     res.status(HTTP_STATUS.Unathorized).send({ message: err.message }); // User failed authentication
+  } else if (err.message === ERROR_MSG.unknownUserId) {
+    res.status(HTTP_STATUS.NotFound).send({ message: err.message });
   } else {
     res
       .status(HTTP_STATUS.InternalServerError)
