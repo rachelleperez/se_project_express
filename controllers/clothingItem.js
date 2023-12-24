@@ -1,5 +1,9 @@
 const clothingItem = require("../models/clothingItem");
-const { HTTP_STATUS, handleRequestError } = require("../utils/errors");
+const {
+  HTTP_STATUS,
+  handleRequestError,
+  ERROR_MSG,
+} = require("../utils/errors");
 
 module.exports.createClothingItem = (req, res) => {
   // console.log(arguments[0]);
@@ -29,9 +33,17 @@ module.exports.deleteClothingItem = (req, res) => {
   const { itemId } = req.params;
   // console.log(itemId);
   clothingItem
-    .findByIdAndDelete(itemId)
-    .orFail()
-    .then((item) => res.send({ data: item }))
+    .findById(itemId)
+    .orFail(new Error(ERROR_MSG.unknownItemId))
+    // found Item
+    .then((itemData) => {
+      // If user requesting change, items's owner = user authorized to update items
+      if (item.owner.equals(req.user._id)) {
+        return itemData.deleteOne().then(res.send({ data: item }));
+      }
+      // else, this user cannot update item
+      return Promise.reject(new Error(ERROR_MSG.forbiddenRequest));
+    })
     .catch((e) => handleRequestError(res, e, "deleteClothingItem"));
 };
 
