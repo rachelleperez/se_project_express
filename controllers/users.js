@@ -1,6 +1,6 @@
-const user = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const user = require("../models/user");
 
 const { JWT_SECRET } = require("../utils/config");
 
@@ -25,12 +25,12 @@ module.exports.createUser = (req, res) => {
       return bcrypt
         .hash(req.body.password, 10) // dont extract password until needed
         .then((hash) => user.create({ name, avatar, email, password: hash }))
-        .then((userData) => {
+        .then((userIn) => {
           res.status(HTTP_STATUS.Created).send({
             data: {
-              name: userData.name,
-              avatar: userData.avatar,
-              email: userData.email,
+              name: userIn.name,
+              avatar: userIn.avatar,
+              email: userIn.email,
             },
           }); // don't return password
         })
@@ -101,7 +101,7 @@ module.exports.updateCurrentUser = (req, res) => {
     .orFail()
     .then((userData) => res.send(userData))
     .catch((e) => {
-      if (err.name !== "ValidationError") e.message = ERROR_MSG.unknownUserId; // if not validation error, then user not found
+      if (e.name !== "ValidationError") e.message = ERROR_MSG.unknownUserId; // if not validation error, then user not found
       handleRequestError(res, e, "updateCurrentUser");
     });
 };
