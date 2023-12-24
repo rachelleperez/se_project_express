@@ -10,7 +10,10 @@ const HTTP_STATUS = {
   InternalServerError: 500,
 };
 
-// in: error and function name where error came from
+// Error Message(s)
+const invalidEmailPasswordMessage = "Incorrect email or password";
+
+// logs error and sends correct status and message
 const handleRequestError = (res, err, srcError) => {
   console.error(err);
   if (err.name === "DocumentNotFoundError") {
@@ -19,6 +22,8 @@ const handleRequestError = (res, err, srcError) => {
     res.status(HTTP_STATUS.BadRequest).send({ message: "Invalid data" });
   } else if (err.name === "CastError") {
     res.status(HTTP_STATUS.BadRequest).send({ message: "Invalid ID" });
+  } else if (err.message === invalidEmailPasswordMessage) {
+    res.status(HTTP_STATUS.Conflict).send({ message: err.message }); // Email already in use
   } else {
     res
       .status(HTTP_STATUS.InternalServerError)
@@ -29,4 +34,5 @@ const handleRequestError = (res, err, srcError) => {
 module.exports = {
   HTTP_STATUS,
   handleRequestError,
+  invalidEmailPasswordMessage,
 };
