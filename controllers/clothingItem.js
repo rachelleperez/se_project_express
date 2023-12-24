@@ -58,3 +58,15 @@ module.exports.dislikeClothingItem = (req, res) => {
     .then((item) => res.send({ data: item }))
     .catch((e) => handleRequestError(res, e, "dislikeClothingItem"));
 };
+
+module.exports.updateCurrentUser = (req, res) => {};
+
+/*
+This route should only allow modification of the name and avatar fields. 
+You'll need to return an updated object in the response (using the new property). 
+Don't forget to handle Not Found, Validation, and default server errors for these routes.
+
+Mongoose has validators for update methods that help avoid incorrect values being set. 
+You can refer to the documentation for information on how to enable validators.
+
+*/
