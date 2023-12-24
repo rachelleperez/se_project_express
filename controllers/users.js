@@ -3,7 +3,6 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const { JWT_SECRET } = require("../utils/config");
-const { ERROR_MSG } = require("../utils/errors");
 
 const {
   HTTP_STATUS,
