@@ -23,7 +23,7 @@ app.use(express.json());
 // import routes that don't need auth middleware
 app.post("/signin", login);
 app.post("/signup", createUser);
-app.use("/items", getClothingItems);
+app.get("/items", getClothingItems);
 
 // add authorization for remaining routes
 app.use(auth);
