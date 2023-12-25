@@ -7,7 +7,7 @@ const { HTTP_STATUS } = require("../utils/errors");
 
 // allows to send api calls to items and users.
 router.use("/items", clothingItem);
-router.use("/users", auth, user);
+router.use("/users", user);
 
 router.use((req, res) => {
   res
