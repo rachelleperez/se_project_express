@@ -1,9 +1,11 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const auth = require("./middlewares/auth");
 
 const { PORT = 3001 } = process.env;
 const { login, createUser } = require("./controllers/users");
+const { getClothingItems } = require("./controllers/clothingItems");
 
 const app = express();
 
@@ -18,9 +20,13 @@ const routes = require("./routes");
 
 app.use(express.json());
 
-app.post("/signin", login); // spec: do not protect with auth
-app.post("/signup", createUser); // spec: do not protect with auth
+// import routes that don't need auth middleware
+app.post("/signin", login);
+app.post("/signup", createUser);
+app.use("/items", getClothingItems);
 
+// add authorization for remaining routes
+app.use(auth);
 app.use(routes);
 
 app.use(cors());
