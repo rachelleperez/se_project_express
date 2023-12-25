@@ -17,6 +17,7 @@ mongoose
   .catch((e) => console.error("DB Error", e));
 
 const routes = require("./routes");
+
 app.use(cors());
 app.use(express.json());
 
