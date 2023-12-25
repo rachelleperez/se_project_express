@@ -17,6 +17,8 @@ mongoose
   .catch((e) => console.error("DB Error", e));
 
 const routes = require("./routes");
+app.use(cors());
+app.use(express.json());
 
 // import routes that don't need auth middleware
 app.post("/signin", login);
@@ -26,9 +28,6 @@ app.get("/items", getClothingItems);
 // add authorization for remaining routes
 app.use(auth);
 app.use(routes);
-
-app.use(cors());
-app.use(express.json());
 
 app.listen(PORT, () => {
   console.log(`App listening at port ${PORT}`);
