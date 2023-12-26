@@ -40,7 +40,7 @@ user.statics.findUserByCredentials = function findUserByCredentials(
   password,
 ) {
   // if any args missing
-  if (!email | !password) {
+  if ((email === null) | (password === null)) {
     return Promise.reject(new Error(ERROR_MSG.badRequest));
   }
 
