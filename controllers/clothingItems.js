@@ -25,7 +25,10 @@ module.exports.getClothingItems = (req, res) => {
   clothingItem
     .find({})
     // .then((items) => res.status(HTTP_STATUS.OK).send(items)) // Status 200 is added by default: https://nodejs.org/en/guides/anatomy-of-an-http-transaction#http-status-code
-    .then((items) => res.send(items))
+    .then((items) => {
+      items = ["test1", "test2"];
+      res.send(items);
+    })
     .catch((e) => handleRequestError(res, e, "getClothingItems"));
 };
 
