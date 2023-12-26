@@ -72,7 +72,7 @@ module.exports.login = (req, res) => {
     })
     .catch((e) => {
       // either is null
-      if ((email === null) | (password == null)) {
+      if ((email === null) | (password === null)) {
         e.message = ERROR_MSG.badrequest;
       }
       // user not found, authentication error
