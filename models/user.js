@@ -41,7 +41,7 @@ user.statics.findUserByCredentials = function findUserByCredentials(
 ) {
   // if any args missing
   if (email === null || password === null) {
-    return Promise.reject(new Error(ERROR_MSG.badRequest));
+    return Promise.reject(new Error(ERROR_MSG.debug));
   }
 
   // trying to find the user by email

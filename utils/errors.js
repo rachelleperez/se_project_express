@@ -41,7 +41,7 @@ const handleRequestError = (res, err, srcError) => {
   } else if (err.message === ERROR_MSG.unathorizedUser) {
     res.status(HTTP_STATUS.Unathorized).send({ message: err.message }); // User failed authentication
   } else if (err.message === ERROR_MSG.invalidEmail) {
-    res.status(HTTP_STATUS.Conflict).send({ message: err.message }); // Email already in use
+    res.status(HTTP_STATUS.Unathorized).send({ message: err.message }); // Email already in use
   } else if (err.message === ERROR_MSG.invalidPassword) {
     res.status(HTTP_STATUS.Unathorized).send({ message: err.message }); // Email already in use
   } else if (err.message === ERROR_MSG.authorizationRequired) {
