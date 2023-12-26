@@ -77,17 +77,17 @@ module.exports.login = (req, res) => {
 
 module.exports.getCurrentUser = (req, res) => {
   user
-    .findById(req.user._id) // as a resul of "req.user = payload" in middleware
+    .findById(req.user.userId) // as a resul of "req.user = payload" in middleware
     .orFail()
     .then((userData) => res.send(userData))
     .catch((e) => {
       e.message = ERROR_MSG.unknownUserId;
       // test
-      console.log(
-        ERROR_MSG.debug.conc +
-          " | getCurrentUser | userId to search: " +
-          req.user_id,
-      );
+      // console.log(
+      //   ERROR_MSG.debug.conc +
+      //     " | getCurrentUser | userId to search: " +
+      //     req.user_id,
+      // );
       handleRequestError(res, e, "getCurrentUser");
     });
 };
