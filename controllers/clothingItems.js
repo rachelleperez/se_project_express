@@ -17,7 +17,7 @@ module.exports.createClothingItem = (req, res) => {
       console.log(item);
       res.status(HTTP_STATUS.Created).send({ data: item });
     })
-    .catch((e) => handleRequestError(res, e, "createClothingItem"));
+    .catch((e) => handleRequestError(res, e));
 };
 
 module.exports.getClothingItems = (req, res) => {
@@ -26,7 +26,7 @@ module.exports.getClothingItems = (req, res) => {
     .find({})
     // .then((items) => res.status(HTTP_STATUS.OK).send(items)) // Status 200 is added by default: https://nodejs.org/en/guides/anatomy-of-an-http-transaction#http-status-code
     .then((items) => res.send(items))
-    .catch((e) => handleRequestError(res, e, "getClothingItems"));
+    .catch((e) => handleRequestError(res, e));
 };
 
 module.exports.deleteClothingItem = (req, res) => {
@@ -44,7 +44,7 @@ module.exports.deleteClothingItem = (req, res) => {
       // else, this user cannot update item
       return Promise.reject(new Error(ERROR_MSG.forbiddenRequest));
     })
-    .catch((e) => handleRequestError(res, e, "deleteClothingItem"));
+    .catch((e) => handleRequestError(res, e));
 };
 
 module.exports.likeClothingItem = (req, res) => {
@@ -56,7 +56,7 @@ module.exports.likeClothingItem = (req, res) => {
     )
     .orFail()
     .then((item) => res.send({ data: item }))
-    .catch((e) => handleRequestError(res, e, "likeClothingItem"));
+    .catch((e) => handleRequestError(res, e));
 };
 
 module.exports.dislikeClothingItem = (req, res) => {
@@ -68,5 +68,5 @@ module.exports.dislikeClothingItem = (req, res) => {
     )
     .orFail()
     .then((item) => res.send({ data: item }))
-    .catch((e) => handleRequestError(res, e, "dislikeClothingItem"));
+    .catch((e) => handleRequestError(res, e));
 };

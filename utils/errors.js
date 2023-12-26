@@ -1,3 +1,4 @@
+// potential HTTP status options
 const HTTP_STATUS = {
   OK: 200, // request suceeded, default response status | https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/200
   Created: 201, // Creation of a resource | https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/201
@@ -25,11 +26,28 @@ const ERROR_MSG = {
   badRequest: "Bad Request",
   validation: "Invalid Data",
   invalidID: "Invalid ID",
+  internalServerError: "Internal Server Error",
+};
+
+const errorStatusMap = {
+  [ERROR_MSG.validation]: HTTP_STATUS.BadRequest,
+  [ERROR_MSG.unathorizedUser]: HTTP_STATUS.Unathorized,
+  [ERROR_MSG.invalidEmail]: HTTP_STATUS.Unathorized,
+  [ERROR_MSG.invalidPassword]: HTTP_STATUS.Unathorized,
+  [ERROR_MSG.authorizationRequired]: HTTP_STATUS.Unathorized,
+  [ERROR_MSG.unknownUserId]: HTTP_STATUS.NotFound,
+  [ERROR_MSG.unknownId]: HTTP_STATUS.NotFound,
+  [ERROR_MSG.unknownItemId]: HTTP_STATUS.NotFound,
+  [ERROR_MSG.forbiddenRequest]: HTTP_STATUS.Forbidden,
+  [ERROR_MSG.badRequest]: HTTP_STATUS.BadRequest,
+  [ERROR_MSG.existingEmail]: HTTP_STATUS.Conflict,
+  [ERROR_MSG.invalidID]: HTTP_STATUS.BadRequest,
+  [ERROR_MSG.internalServerError]: HTTP_STATUS.InternalServerError,
 };
 
 // logs error and sends correct status and message
-const handleRequestError = (res, errIn, srcError) => {
-  // so I can rename the message property
+const handleRequestError = (res, errIn) => {
+  // copied to be able to override message
   const err = errIn;
 
   // update messages for standard ones
@@ -41,43 +59,54 @@ const handleRequestError = (res, errIn, srcError) => {
     err.message = ERROR_MSG.invalidID;
   }
 
-  // handle errors based on custom error messages
-  if (err.message === ERROR_MSG.debug) {
-    res.status(HTTP_STATUS.ServiceUnavailable).send({ message: err.message }); // Testing stage
+  // If error mapped, use mapping
+  if (Object.keys(errorStatusMap).includes(err.message)) {
+    res.status(errorStatusMap[err.message]).send({ message: err.message });
   }
-  // handle default error messages
-  else if (err.message === ERROR_MSG.validation) {
-    res.status(HTTP_STATUS.BadRequest).send({ message: "Invalid Data" });
-  } else if (err.message === ERROR_MSG.unathorizedUser) {
-    res.status(HTTP_STATUS.Unathorized).send({ message: err.message }); // User failed authentication
-  } else if (err.message === ERROR_MSG.invalidEmail) {
-    res.status(HTTP_STATUS.Unathorized).send({ message: err.message }); // Email already in use
-  } else if (err.message === ERROR_MSG.invalidPassword) {
-    res.status(HTTP_STATUS.Unathorized).send({ message: err.message }); // Email already in use
-  } else if (err.message === ERROR_MSG.authorizationRequired) {
-    res.status(HTTP_STATUS.Unathorized).send({ message: err.message }); // User failed authentication
-  } else if (err.message === ERROR_MSG.unknownUserId) {
-    res.status(HTTP_STATUS.NotFound).send({ message: err.message });
-  } else if (err.message === ERROR_MSG.unknownId) {
-    res.status(HTTP_STATUS.NotFound).send({ message: err.message });
-  } else if (err.message === ERROR_MSG.unknownItemId) {
-    res.status(HTTP_STATUS.NotFound).send({ message: err.message });
-  } else if (err.message === ERROR_MSG.forbiddenRequest) {
-    res.status(HTTP_STATUS.Forbidden).send({ message: err.message });
-  } else if (err.message === ERROR_MSG.badRequest) {
-    res.status(HTTP_STATUS.BadRequest).send({ message: err.message });
-  } else if (err.message === ERROR_MSG.existingEmail) {
-    res.status(HTTP_STATUS.Conflict).send({ message: err.message });
-  } else if (err.message === ERROR_MSG.invalidID) {
-    res.status(HTTP_STATUS.BadRequest).send({ message: err.message });
-  }
-
-  // default: 500
+  // default: Internal Server Error
   else {
     res
-      .status(HTTP_STATUS.InternalServerError)
-      .send({ message: `Error from ${srcError}` });
+      .status(errorStatusMap[ERROR_MSG.internalServerError])
+      .send({ message: ERROR_MSG.internalServerError });
   }
+
+  // // handle errors based on custom error messages
+  // if (err.message === ERROR_MSG.debug) {
+  //   res.status(HTTP_STATUS.ServiceUnavailable).send({ message: err.message }); // Testing stage
+  // }
+  // // handle default error messages
+  // else if (err.message === ERROR_MSG.validation) {
+  //   res.status(HTTP_STATUS.BadRequest).send({ message: "Invalid Data" });
+  // } else if (err.message === ERROR_MSG.unathorizedUser) {
+  //   res.status(HTTP_STATUS.Unathorized).send({ message: err.message }); // User failed authentication
+  // } else if (err.message === ERROR_MSG.invalidEmail) {
+  //   res.status(HTTP_STATUS.Unathorized).send({ message: err.message }); // Email already in use
+  // } else if (err.message === ERROR_MSG.invalidPassword) {
+  //   res.status(HTTP_STATUS.Unathorized).send({ message: err.message }); // Email already in use
+  // } else if (err.message === ERROR_MSG.authorizationRequired) {
+  //   res.status(HTTP_STATUS.Unathorized).send({ message: err.message }); // User failed authentication
+  // } else if (err.message === ERROR_MSG.unknownUserId) {
+  //   res.status(HTTP_STATUS.NotFound).send({ message: err.message });
+  // } else if (err.message === ERROR_MSG.unknownId) {
+  //   res.status(HTTP_STATUS.NotFound).send({ message: err.message });
+  // } else if (err.message === ERROR_MSG.unknownItemId) {
+  //   res.status(HTTP_STATUS.NotFound).send({ message: err.message });
+  // } else if (err.message === ERROR_MSG.forbiddenRequest) {
+  //   res.status(HTTP_STATUS.Forbidden).send({ message: err.message });
+  // } else if (err.message === ERROR_MSG.badRequest) {
+  //   res.status(HTTP_STATUS.BadRequest).send({ message: err.message });
+  // } else if (err.message === ERROR_MSG.existingEmail) {
+  //   res.status(HTTP_STATUS.Conflict).send({ message: err.message });
+  // } else if (err.message === ERROR_MSG.invalidID) {
+  //   res.status(HTTP_STATUS.BadRequest).send({ message: err.message });
+  // }
+
+  // // default: 500
+  // else {
+  //   res
+  //     .status(HTTP_STATUS.InternalServerError)
+  //     .send({ message: `Error from ${srcError}` });
+  // }
 };
 
 module.exports = {

@@ -35,10 +35,10 @@ module.exports.createUser = (req, res) => {
         })
         .catch((e) => {
           e.message = ERROR_MSG.invalidPassword;
-          handleRequestError(res, e, "createUser");
+          handleRequestError(res, e);
         });
     })
-    .catch((e) => handleRequestError(res, e, "createUser"));
+    .catch((e) => handleRequestError(res, e));
 };
 
 module.exports.getUsers = (req, res) => {
@@ -46,7 +46,7 @@ module.exports.getUsers = (req, res) => {
     .find({})
     // .then((users) => res.status(HTTP_STATUS.OK).send(users)) // // Status 200 is added by default: https://nodejs.org/en/guides/anatomy-of-an-http-transaction#http-status-code
     .then((users) => res.send(users))
-    .catch((e) => handleRequestError(res, e, "getUsers"));
+    .catch((e) => handleRequestError(res, e));
 };
 
 // module.exports.getUser = (req, res) => {
@@ -54,7 +54,7 @@ module.exports.getUsers = (req, res) => {
 //     .findById(req.params.userId)
 //     .orFail()
 //     .then((userData) => res.send(userData))
-//     .catch((e) => handleRequestError(res, e, "getUser"));
+//     .catch((e) => handleRequestError(res, e));
 // };
 
 module.exports.login = (req, res) => {
@@ -82,7 +82,7 @@ module.exports.login = (req, res) => {
       //   e.message = ERROR_MSG.unathorizedUser;
       // }
       // console.log(e.message);
-      handleRequestError(res, e, "login");
+      handleRequestError(res, e);
     });
 };
 
@@ -95,7 +95,7 @@ module.exports.getCurrentUser = (req, res) => {
     })
     .catch((e) => {
       e.message = ERROR_MSG.unknownUserId;
-      handleRequestError(res, e, "getCurrentUser");
+      handleRequestError(res, e);
     });
 };
 
@@ -115,6 +115,6 @@ module.exports.updateCurrentUser = (req, res) => {
     .then((userData) => res.send(userData))
     .catch((e) => {
       if (e.name !== "ValidationError") e.message = ERROR_MSG.unknownUserId; // if not validation error, then user not found
-      handleRequestError(res, e, "updateCurrentUser");
+      handleRequestError(res, e);
     });
 };
