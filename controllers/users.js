@@ -73,11 +73,11 @@ module.exports.login = (req, res) => {
     })
     .catch((e) => {
       // user not found, authentication error
-      //console.log(e);
-      console.log(e.name);
-      if ((e.message = "data and hash arguments required"))
+      // console.log(e);
+      // console.log(e.name);
+      if ((e.message = "data and hash arguments required")) {
         e.message = ERROR_MSG.badrequest;
-      else if (e.name === "DocumentNotFoundError") {
+      } else if (e.name === "DocumentNotFoundError") {
         e.message = ERROR_MSG.unathorizedUser;
       }
       handleRequestError(res, e, "login");
