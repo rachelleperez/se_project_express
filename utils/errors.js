@@ -7,6 +7,7 @@ const HTTP_STATUS = {
   NotFound: 404, // Id passed not found | https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404
   Conflict: 409, // Conflict with currrent statue of resource | https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/409
   InternalServerError: 500, // Internal Server Error, default error | https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+  ServiceUnavailable: 503, // Service Unavailable, to be used for testing | https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503
 };
 
 // error messages declared once here
@@ -25,7 +26,7 @@ const handleRequestError = (res, err, srcError) => {
   console.error(err);
   // handle errors based on custom error messages
   if (err.message === ERROR_MSG.debug) {
-    res.status(HTTP_STATUS.BadRequest).send({ message: err.message }); // User failed authentication
+    res.status(HTTP_STATUS.ServiceUnavailable).send({ message: err.message }); // Testing stage
   } else if (err.message === ERROR_MSG.unathorizedUser) {
     res.status(HTTP_STATUS.BadRequest).send({ message: err.message }); // User failed authentication
   } else if (err.message === ERROR_MSG.invalidEmailPassword) {
