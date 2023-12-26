@@ -92,7 +92,7 @@ module.exports.updateCurrentUser = (req, res) => {
 
   user
     .findByIdAndUpdate(
-      { __id: req.user_id },
+      { _id: req.user_id },
       { name, avatar },
       {
         new: true, // then handler receives updated document
