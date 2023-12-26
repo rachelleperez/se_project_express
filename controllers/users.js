@@ -71,8 +71,14 @@ module.exports.login = (req, res) => {
       res.send({ token }); // return the token to client
     })
     .catch((e) => {
+      // console.log(e.message);
       // authentication error
-      e.message = ERROR_MSG.unathorizedUser;
+      if (e.message === "data and hash arguments required") {
+        e.message = ERROR_MSG.badRequest;
+      } else {
+        e.message = ERROR_MSG.unathorizedUser;
+      }
+      // console.log(e.message);
       handleRequestError(res, e, "login");
     });
 };

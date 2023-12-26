@@ -20,6 +20,7 @@ const ERROR_MSG = {
   unknownItemId: "Unknown Item Id",
   forbiddenRequest: "Unathorized Request",
   debug: "Debugging Error",
+  badRequest: "Invalid Data",
 };
 
 // logs error and sends correct status and message
@@ -51,6 +52,8 @@ const handleRequestError = (res, err, srcError) => {
     res.status(HTTP_STATUS.NotFound).send({ message: err.message });
   } else if (err.message === ERROR_MSG.forbiddenRequest) {
     res.status(HTTP_STATUS.Forbidden).send({ message: err.message });
+  } else if (err.message === ERROR_MSG.badRequest) {
+    res.status(HTTP_STATUS.BadRequest).send({ message: err.message });
   }
 
   // default: 500
