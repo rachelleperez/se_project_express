@@ -20,6 +20,9 @@ const ERROR_MSG = {
   unknownItemId: "Unknown Item Id",
   forbiddenRequest: "Unathorized Request",
   debug: "Debugging Error",
+  documentNotFound: "Unknown User",
+  badrequest: "Invalid data",
+  validation: "Invalid data",
 };
 
 // logs error and sends correct status and message
@@ -31,13 +34,14 @@ const handleRequestError = (res, err, srcError) => {
     res.status(HTTP_STATUS.ServiceUnavailable).send({ message: err.message }); // Testing stage
   }
   // handle default error messages
-  else if (err.name === "DocumentNotFoundError") {
-    res.status(HTTP_STATUS.NotFound).send({ message: "ID not found" });
-  } else if (err.name === "ValidationError") {
-    res.status(HTTP_STATUS.BadRequest).send({ message: "Invalid data" });
-  } else if (err.name === "CastError") {
-    res.status(HTTP_STATUS.BadRequest).send({ message: "Invalid ID" });
-  } else if (err.message === ERROR_MSG.unathorizedUser) {
+  // else if (err.name === "DocumentNotFoundError") {
+  //   res.status(HTTP_STATUS.NotFound).send({ message: "ID not found" });
+  // } else if (err.name === "ValidationError") {
+  //   res.status(HTTP_STATUS.BadRequest).send({ message: "Invalid data" });
+  // } else if (err.name === "CastError") {
+  //   res.status(HTTP_STATUS.BadRequest).send({ message: "Invalid ID" });
+  // }
+  else if (err.message === ERROR_MSG.unathorizedUser) {
     res.status(HTTP_STATUS.Unathorized).send({ message: err.message }); // User failed authentication
   } else if (err.message === ERROR_MSG.invalidEmail) {
     res.status(HTTP_STATUS.Conflict).send({ message: err.message }); // Email already in use

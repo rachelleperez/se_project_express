@@ -62,17 +62,23 @@ module.exports.login = (req, res) => {
 
   return user
     .findUserByCredentials(email, password)
+    .orFail()
     .then((userData) => {
       // authentication successful!
       const token = jwt.sign({ _id: userData._id }, JWT_SECRET, {
         expiresIn: "7d",
       });
-
       res.send({ token }); // return the token to client
     })
     .catch((e) => {
-      // authentication error
-      e.message = ERROR_MSG.unathorizedUser;
+      // either is null
+      if ((email === null) | (password == null)) {
+        e.message = ERROR_MSG.badrequest;
+      }
+      // user not found, authentication error
+      else if (e.name === "DocumentNotFoundError") {
+        e.message = ERROR_MSG.unathorizedUser;
+      }
       handleRequestError(res, e, "login");
     });
 };
