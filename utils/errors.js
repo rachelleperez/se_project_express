@@ -19,26 +19,31 @@ const ERROR_MSG = {
   authorizationRequired: "Authorization Required",
   unknownUserId: "Unknown User Id",
   unknownItemId: "Unknown Item Id",
+  unknownId: "Unknown Id",
   forbiddenRequest: "Unathorized Request",
   debug: "Debugging Error",
-  badRequest: "Invalid Data",
+  badRequest: "Bad Request",
+  validation: "Invalid Data",
+  invalidID: "Invalid ID",
 };
 
 // logs error and sends correct status and message
 const handleRequestError = (res, err, srcError) => {
   console.error(err);
 
+  // update messages for standard ones
+  if (err.name === "ValidationError") err.message = ERROR_MSG.validation;
+  else if (err.name === "DocumentNotFoundError")
+    err.message = ERROR_MSG.unknownId;
+  else if (err.name === "CastError") err.message = ERROR_MSG.invalidID;
+
   // handle errors based on custom error messages
   if (err.message === ERROR_MSG.debug) {
     res.status(HTTP_STATUS.ServiceUnavailable).send({ message: err.message }); // Testing stage
   }
   // handle default error messages
-  else if (err.name === "DocumentNotFoundError") {
-    res.status(HTTP_STATUS.NotFound).send({ message: "ID not found" });
-  } else if (err.name === "ValidationError") {
-    res.status(HTTP_STATUS.BadRequest).send({ message: "Invalid data" });
-  } else if (err.name === "CastError") {
-    res.status(HTTP_STATUS.BadRequest).send({ message: "Invalid ID" });
+  else if (err.messafe === ERROR_MSG.validation) {
+    res.status(HTTP_STATUS.BadRequest).send({ message: "Invalid Data" });
   } else if (err.message === ERROR_MSG.unathorizedUser) {
     res.status(HTTP_STATUS.Unathorized).send({ message: err.message }); // User failed authentication
   } else if (err.message === ERROR_MSG.invalidEmail) {
@@ -48,6 +53,8 @@ const handleRequestError = (res, err, srcError) => {
   } else if (err.message === ERROR_MSG.authorizationRequired) {
     res.status(HTTP_STATUS.Unathorized).send({ message: err.message }); // User failed authentication
   } else if (err.message === ERROR_MSG.unknownUserId) {
+    res.status(HTTP_STATUS.NotFound).send({ message: err.message });
+  } else if (err.message === ERROR_MSG.unknownId) {
     res.status(HTTP_STATUS.NotFound).send({ message: err.message });
   } else if (err.message === ERROR_MSG.unknownItemId) {
     res.status(HTTP_STATUS.NotFound).send({ message: err.message });
