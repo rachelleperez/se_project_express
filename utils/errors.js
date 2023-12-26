@@ -12,7 +12,8 @@ const HTTP_STATUS = {
 
 // error messages declared once here
 const ERROR_MSG = {
-  invalidEmailPassword: "Incorrect email or password",
+  invalidEmail: "Email alreayd in use",
+  invalidPassword: "Incorrect password",
   unathorizedUser: "Unathorized User",
   authorizationRequired: "Authorization Required",
   unknownUserId: "Unknown User Id",
@@ -24,12 +25,15 @@ const ERROR_MSG = {
 // logs error and sends correct status and message
 const handleRequestError = (res, err, srcError) => {
   console.error(err);
+
   // handle errors based on custom error messages
   if (err.message === ERROR_MSG.debug) {
     res.status(HTTP_STATUS.ServiceUnavailable).send({ message: err.message }); // Testing stage
   } else if (err.message === ERROR_MSG.unathorizedUser) {
-    res.status(HTTP_STATUS.BadRequest).send({ message: err.message }); // User failed authentication
-  } else if (err.message === ERROR_MSG.invalidEmailPassword) {
+    res.status(HTTP_STATUS.Unathorized).send({ message: err.message }); // User failed authentication
+  } else if (err.message === ERROR_MSG.invalidEmail) {
+    res.status(HTTP_STATUS.Unathorized).send({ message: err.message }); // Email already in use
+  } else if (err.message === ERROR_MSG.invalidPassword) {
     res.status(HTTP_STATUS.Unathorized).send({ message: err.message }); // Email already in use
   } else if (err.message === ERROR_MSG.authorizationRequired) {
     res.status(HTTP_STATUS.Unathorized).send({ message: err.message }); // User failed authentication

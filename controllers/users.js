@@ -18,7 +18,7 @@ module.exports.createUser = (req, res) => {
     .then((userData) => {
       // if email found
       if (userData) {
-        return Promise.reject(new Error(ERROR_MSG.invalidEmailPassword));
+        return Promise.reject(new Error(ERROR_MSG.invalidEmail));
       }
       // else, new email
       return bcrypt
@@ -33,7 +33,10 @@ module.exports.createUser = (req, res) => {
             },
           }); // don't return password
         })
-        .catch((e) => handleRequestError(res, e, "createUser"));
+        .catch((e) => {
+          err.message = ERROR_MSG.invalidPassword;
+          handleRequestError(res, e, "createUser");
+        });
     })
     .catch((e) => handleRequestError(res, e, "createUser"));
 };
