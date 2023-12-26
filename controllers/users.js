@@ -83,10 +83,11 @@ module.exports.getCurrentUser = (req, res) => {
     .catch((e) => {
       e.message = ERROR_MSG.unknownUserId;
       // test
-      e.message =
+      console.log(
         ERROR_MSG.debug.conc +
-        " | getCurrentUser | userId to search: " +
-        req.user_id;
+          " | getCurrentUser | userId to search: " +
+          req.user_id,
+      );
       handleRequestError(res, e, "getCurrentUser");
     });
 };
