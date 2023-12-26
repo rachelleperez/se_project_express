@@ -11,8 +11,6 @@ const {
 } = require("../utils/errors");
 
 module.exports.createUser = (req, res) => {
-  console.log("CreateUser");
-  console.log(req.body);
   const { name, avatar, email } = req.body;
 
   user
@@ -57,17 +55,11 @@ module.exports.getUsers = (req, res) => {
 // };
 
 module.exports.login = (req, res) => {
-  console.log("Login");
   const { email, password } = req.body;
 
   return user
     .findUserByCredentials(email, password)
     .then((userData) => {
-      // console.log(userData);
-      console.log("Print userData.name");
-      console.log(userData.name);
-      console.log("Print userData._id");
-      console.log(userData._id);
       // authentication successful!
       const token = jwt.sign({ _id: userData._id }, JWT_SECRET, {
         expiresIn: "7d",
@@ -83,17 +75,13 @@ module.exports.login = (req, res) => {
 };
 
 module.exports.getCurrentUser = (req, res) => {
-  console.log("--------------- getCurrentUser ---------------");
-  // console.log(req);
   user
     .findById(req.user._id) // as a resul of "req.user = payload" in middleware
     .orFail()
     .then((userData) => {
-      console.log("Found User");
       res.send(userData);
     })
     .catch((e) => {
-      console.log("User not Found");
       e.message = ERROR_MSG.unknownUserId;
       handleRequestError(res, e, "getCurrentUser");
     });
