@@ -30,7 +30,7 @@ const ERROR_MSG = {
 // logs error and sends correct status and message
 const handleRequestError = (res, errIn, srcError) => {
   // so I can rename the message property
-  let err = errIn;
+  const err = errIn;
 
   // update messages for standard ones
   if (err.name === "ValidationError") {
