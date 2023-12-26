@@ -29,6 +29,14 @@ const handleRequestError = (res, err, srcError) => {
   // handle errors based on custom error messages
   if (err.message === ERROR_MSG.debug) {
     res.status(HTTP_STATUS.ServiceUnavailable).send({ message: err.message }); // Testing stage
+  }
+  // handle default error messages
+  else if (err.name === "DocumentNotFoundError") {
+    res.status(HTTP_STATUS.NotFound).send({ message: "ID not found" });
+  } else if (err.name === "ValidationError") {
+    res.status(HTTP_STATUS.BadRequest).send({ message: "Invalid data" });
+  } else if (err.name === "CastError") {
+    res.status(HTTP_STATUS.BadRequest).send({ message: "Invalid ID" });
   } else if (err.message === ERROR_MSG.unathorizedUser) {
     res.status(HTTP_STATUS.Unathorized).send({ message: err.message }); // User failed authentication
   } else if (err.message === ERROR_MSG.invalidEmail) {
@@ -44,14 +52,7 @@ const handleRequestError = (res, err, srcError) => {
   } else if (err.message === ERROR_MSG.forbiddenRequest) {
     res.status(HTTP_STATUS.Forbidden).send({ message: err.message });
   }
-  // handle default error messages
-  else if (err.name === "DocumentNotFoundError") {
-    res.status(HTTP_STATUS.NotFound).send({ message: "ID not found" });
-  } else if (err.name === "ValidationError") {
-    res.status(HTTP_STATUS.BadRequest).send({ message: "Invalid data" });
-  } else if (err.name === "CastError") {
-    res.status(HTTP_STATUS.BadRequest).send({ message: "Invalid ID" });
-  }
+
   // default: 500
   else {
     res
