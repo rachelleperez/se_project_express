@@ -59,10 +59,11 @@ module.exports.getUsers = (req, res) => {
 
 module.exports.login = (req, res) => {
   const { email, password } = req.body;
+  console.log(email);
+  console.log(password);
 
   return user
     .findUserByCredentials(email, password)
-    .orFail()
     .then((userData) => {
       // authentication successful!
       const token = jwt.sign({ _id: userData._id }, JWT_SECRET, {
@@ -71,11 +72,11 @@ module.exports.login = (req, res) => {
       res.send({ token }); // return the token to client
     })
     .catch((e) => {
-      // either is null
-      if (email ?? password === null) {
-        e.message = ERROR_MSG.badrequest;
-      }
       // user not found, authentication error
+      //console.log(e);
+      console.log(e.name);
+      if ((e.message = "data and hash arguments required"))
+        e.message = ERROR_MSG.badrequest;
       else if (e.name === "DocumentNotFoundError") {
         e.message = ERROR_MSG.unathorizedUser;
       }
