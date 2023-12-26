@@ -12,7 +12,8 @@ const HTTP_STATUS = {
 
 // error messages declared once here
 const ERROR_MSG = {
-  invalidEmail: "Email already in use",
+  invalidEmail: "Invalid Email",
+  existingEmail: "Email already in use",
   invalidPassword: "Incorrect password",
   unathorizedUser: "Unathorized User",
   authorizationRequired: "Authorization Required",
@@ -54,6 +55,8 @@ const handleRequestError = (res, err, srcError) => {
     res.status(HTTP_STATUS.Forbidden).send({ message: err.message });
   } else if (err.message === ERROR_MSG.badRequest) {
     res.status(HTTP_STATUS.BadRequest).send({ message: err.message });
+  } else if (err.message === ERROR_MSG.existingEmail) {
+    res.status(HTTP_STATUS.Conflict).send({ message: err.message });
   }
 
   // default: 500

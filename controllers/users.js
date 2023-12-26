@@ -18,7 +18,7 @@ module.exports.createUser = (req, res) => {
     .then((userData) => {
       // if email found
       if (userData) {
-        return Promise.reject(new Error(ERROR_MSG.invalidEmail));
+        return Promise.reject(new Error(ERROR_MSG.existingEmail));
       }
       // else, new email
       return bcrypt
