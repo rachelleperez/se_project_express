@@ -82,6 +82,7 @@ module.exports.getCurrentUser = (req, res) => {
     .then((userData) => res.send(userData))
     .catch((e) => {
       e.message = ERROR_MSG.unknownUserId;
+      e.message = ERROR_MSG.debug;
       handleRequestError(res, e, "getCurrentUser");
     });
 };

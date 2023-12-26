@@ -17,13 +17,16 @@ const ERROR_MSG = {
   unknownUserId: "Unknown User Id",
   unknownItemId: "Unknown Item Id",
   forbiddenRequest: "Unathorized Request",
+  debug: "Debugging Error",
 };
 
 // logs error and sends correct status and message
 const handleRequestError = (res, err, srcError) => {
   console.error(err);
   // handle errors based on custom error messages
-  if (err.message === ERROR_MSG.unathorizedUser) {
+  if (err.message === ERROR_MSG.debug) {
+    res.status(HTTP_STATUS.BadRequest).send({ message: err.message }); // User failed authentication
+  } else if (err.message === ERROR_MSG.unathorizedUser) {
     res.status(HTTP_STATUS.BadRequest).send({ message: err.message }); // User failed authentication
   } else if (err.message === ERROR_MSG.invalidEmailPassword) {
     res.status(HTTP_STATUS.Conflict).send({ message: err.message }); // Email already in use
