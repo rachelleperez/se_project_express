@@ -34,7 +34,7 @@ module.exports.createUser = (req, res) => {
           }); // don't return password
         })
         .catch((e) => {
-          err.message = ERROR_MSG.invalidPassword;
+          e.message = ERROR_MSG.invalidPassword;
           handleRequestError(res, e, "createUser");
         });
     })
