@@ -76,11 +76,11 @@ module.exports.login = (req, res) => {
     .catch((e) => {
       console.log(e.message);
       // authentication error
-      if (!email | !password) {
-        e.message = ERROR_MSG.badRequest;
-      } else {
-        e.message = ERROR_MSG.unathorizedUser;
-      }
+      // if (!email | !password) {
+      //   e.message = ERROR_MSG.badRequest;
+      // } else {
+      //   e.message = ERROR_MSG.unathorizedUser;
+      // }
       // console.log(e.message);
       handleRequestError(res, e, "login");
     });
