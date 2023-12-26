@@ -68,6 +68,8 @@ const handleRequestError = (res, errIn, srcError) => {
     res.status(HTTP_STATUS.BadRequest).send({ message: err.message });
   } else if (err.message === ERROR_MSG.existingEmail) {
     res.status(HTTP_STATUS.Conflict).send({ message: err.message });
+  } else if (err.message === ERROR_MSG.invalidId) {
+    res.status(HTTP_STATUS.BadRequest).send({ message: err.message });
   }
 
   // default: 500
