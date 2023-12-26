@@ -60,6 +60,9 @@ module.exports.getUsers = (req, res) => {
 module.exports.login = (req, res) => {
   const { email, password } = req.body;
 
+  // const args_missing = false;
+  // if (!email | !password) args_missing = true;
+
   return user
     .findUserByCredentials(email, password)
     .then((userData) => {
@@ -71,9 +74,9 @@ module.exports.login = (req, res) => {
       res.send({ token }); // return the token to client
     })
     .catch((e) => {
-      // console.log(e.message);
+      console.log(e.message);
       // authentication error
-      if (e.message === "data and hash arguments required") {
+      if (!email | !password) {
         e.message = ERROR_MSG.badRequest;
       } else {
         e.message = ERROR_MSG.unathorizedUser;
