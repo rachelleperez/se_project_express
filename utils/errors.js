@@ -32,17 +32,20 @@ const handleRequestError = (res, err, srcError) => {
   console.error(err);
 
   // update messages for standard ones
-  if (err.name === "ValidationError") err.message = ERROR_MSG.validation;
-  else if (err.name === "DocumentNotFoundError")
+  if (err.name === "ValidationError") {
+    err.message = ERROR_MSG.validation;
+  } else if (err.name === "DocumentNotFoundError") {
     err.message = ERROR_MSG.unknownId;
-  else if (err.name === "CastError") err.message = ERROR_MSG.invalidID;
+  } else if (err.name === "CastError") {
+    err.message = ERROR_MSG.invalidID;
+  }
 
   // handle errors based on custom error messages
   if (err.message === ERROR_MSG.debug) {
     res.status(HTTP_STATUS.ServiceUnavailable).send({ message: err.message }); // Testing stage
   }
   // handle default error messages
-  else if (err.messafe === ERROR_MSG.validation) {
+  else if (err.message === ERROR_MSG.validation) {
     res.status(HTTP_STATUS.BadRequest).send({ message: "Invalid Data" });
   } else if (err.message === ERROR_MSG.unathorizedUser) {
     res.status(HTTP_STATUS.Unathorized).send({ message: err.message }); // User failed authentication
