@@ -59,6 +59,8 @@ const handleRequestError = (res, errIn) => {
     err.message = ERROR_MSG.invalidID;
   }
 
+  console.error(err.message);
+
   // If error mapped, use mapping
   if (Object.keys(errorStatusMap).includes(err.message)) {
     res.status(errorStatusMap[err.message]).send({ message: err.message });
