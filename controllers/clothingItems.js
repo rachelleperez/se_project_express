@@ -15,7 +15,7 @@ module.exports.createClothingItem = (req, res) => {
     .create({ name, weather, imageUrl, owner: req.user._id })
     .then((item) => {
       console.log(item);
-      res.status(HTTP_STATUS.Created).send({ data: item });
+      res.status(HTTP_STATUS.Created).send(item);
     })
     .catch((e) => handleRequestError(res, e));
 };
@@ -39,7 +39,7 @@ module.exports.deleteClothingItem = (req, res) => {
     .then((item) => {
       // If user requesting change, items's owner = user authorized to update items
       if (item.owner.equals(req.user._id)) {
-        return item.deleteOne().then(res.send({ data: item }));
+        return item.deleteOne().then(res.send(item));
       }
       // else, this user cannot update item
       return Promise.reject(new Error(ERROR_MSG.forbiddenRequest));
