@@ -55,7 +55,7 @@ module.exports.likeClothingItem = (req, res) => {
       { new: true },
     )
     .orFail()
-    .then((item) => res.send({ data: item }))
+    .then((item) => res.send(item))
     .catch((e) => handleRequestError(res, e));
 };
 
@@ -67,6 +67,6 @@ module.exports.dislikeClothingItem = (req, res) => {
       { new: true },
     )
     .orFail()
-    .then((item) => res.send({ data: item }))
+    .then((item) => res.send(item))
     .catch((e) => handleRequestError(res, e));
 };
