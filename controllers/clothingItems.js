@@ -1,9 +1,15 @@
 const clothingItem = require("../models/clothingItem");
+const { HTTP_STATUS, handleRequestError } = require("../utils/errors");
+
 const {
-  HTTP_STATUS,
-  handleRequestError,
   ERROR_MSG,
-} = require("../utils/errors");
+  BadRequestError,
+  ConflictError,
+  ForbiddenError,
+  InternalServerError,
+  NotFoundError,
+  UnauthorizedError,
+} = require("../utils/errors/index");
 
 module.exports.createClothingItem = (req, res) => {
   // console.log(arguments[0]);

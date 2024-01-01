@@ -4,11 +4,17 @@ const user = require("../models/user");
 
 const { JWT_SECRET } = require("../utils/config");
 
+const { HTTP_STATUS, handleRequestError } = require("../utils/errors");
+
 const {
-  HTTP_STATUS,
-  handleRequestError,
   ERROR_MSG,
-} = require("../utils/errors");
+  BadRequestError,
+  ConflictError,
+  ForbiddenError,
+  InternalServerError,
+  NotFoundError,
+  UnauthorizedError,
+} = require("../utils/errors/index");
 
 module.exports.createUser = (req, res) => {
   const { name, avatar, email } = req.body;

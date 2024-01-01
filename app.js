@@ -30,6 +30,12 @@ app.get("/items", getClothingItems);
 app.use(auth);
 app.use(routes);
 
+// centralized error handling
+app.use((err, req, res, next) => {
+  console.error(err);
+  return res.status(500).send({ message: err.message });
+});
+
 app.listen(PORT, () => {
   console.log(`App listening at port ${PORT}`);
   console.log(

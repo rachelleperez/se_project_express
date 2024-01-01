@@ -11,7 +11,7 @@ const HTTP_STATUS = {
   ServiceUnavailable: 503, // Service Unavailable, to be used for testing | https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503
 };
 
-// error messages declared once here
+// error messages declared once here. No longer exported
 const ERROR_MSG = {
   invalidEmail: "Invalid Email",
   existingEmail: "Email already in use",
@@ -76,5 +76,4 @@ const handleRequestError = (res, errIn) => {
 module.exports = {
   HTTP_STATUS,
   handleRequestError,
-  ERROR_MSG,
 };

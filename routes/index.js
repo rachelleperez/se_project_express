@@ -4,6 +4,8 @@ const user = require("./users");
 
 const { HTTP_STATUS } = require("../utils/errors");
 
+const { NotFoundError } = require("../utils/errors/index");
+
 // allows to send api calls to items and users.
 router.use("/items", clothingItem);
 router.use("/users", user);
