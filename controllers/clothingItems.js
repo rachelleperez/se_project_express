@@ -6,7 +6,7 @@ const {
   NotFoundError,
 } = require("../utils/errors/index");
 
-module.exports.createClothingItem = (req, res) => {
+module.exports.createClothingItem = (req, res, next) => {
   console.log(req.body);
 
   const { name, weather, imageUrl } = req.body;
@@ -20,14 +20,14 @@ module.exports.createClothingItem = (req, res) => {
     .catch((err) => next(err));
 };
 
-module.exports.getClothingItems = (req, res) => {
+module.exports.getClothingItems = (req, res, next) => {
   clothingItem
     .find({})
     .then((items) => res.send(items))
     .catch((err) => next(err));
 };
 
-module.exports.deleteClothingItem = (req, res) => {
+module.exports.deleteClothingItem = (req, res, next) => {
   const { itemId } = req.params;
   clothingItem
     .findById(itemId)
@@ -44,7 +44,7 @@ module.exports.deleteClothingItem = (req, res) => {
     .catch((err) => next(err));
 };
 
-module.exports.likeClothingItem = (req, res) => {
+module.exports.likeClothingItem = (req, res, next) => {
   clothingItem
     .findByIdAndUpdate(
       req.params.itemId,
@@ -56,7 +56,7 @@ module.exports.likeClothingItem = (req, res) => {
     .catch((err) => next(err));
 };
 
-module.exports.dislikeClothingItem = (req, res) => {
+module.exports.dislikeClothingItem = (req, res, next) => {
   clothingItem
     .findByIdAndUpdate(
       req.params.itemId,

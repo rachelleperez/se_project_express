@@ -15,7 +15,7 @@ const {
   BadRequestError,
 } = require("../utils/errors/index");
 
-module.exports.createUser = (req, res) => {
+module.exports.createUser = (req, res, next) => {
   const { name, avatar, email } = req.body;
 
   user
@@ -45,7 +45,7 @@ module.exports.createUser = (req, res) => {
     .catch((err) => next(err));
 };
 
-module.exports.getUsers = (req, res) => {
+module.exports.getUsers = (req, res, next) => {
   user // orFail not needed, is no data, ok with empty array
     .find({})
     // .then((users) => res.status(HTTP_STATUS.OK).send(users)) // // Status 200 is added by default: https://nodejs.org/en/guides/anatomy-of-an-http-transaction#http-status-code
@@ -53,7 +53,7 @@ module.exports.getUsers = (req, res) => {
     .catch((err) => next(err));
 };
 
-module.exports.login = (req, res) => {
+module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
 
   // const args_missing = false;
@@ -72,7 +72,7 @@ module.exports.login = (req, res) => {
     .catch((err) => next(err));
 };
 
-module.exports.getCurrentUser = (req, res) => {
+module.exports.getCurrentUser = (req, res, next) => {
   user
     .findById(req.user._id) // as a resul of "req.user = payload" in middleware
     .orFail()
@@ -84,7 +84,7 @@ module.exports.getCurrentUser = (req, res) => {
     });
 };
 
-module.exports.updateCurrentUser = (req, res) => {
+module.exports.updateCurrentUser = (req, res, next) => {
   const { name, avatar } = req.body;
 
   user
