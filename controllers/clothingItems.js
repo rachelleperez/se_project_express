@@ -15,7 +15,7 @@ module.exports.createClothingItem = (req, res, next) => {
   clothingItem
     .create({ name, weather, imageUrl, owner: req.user._id })
     .then((item) => {
-      console.log(item);
+      // console.log(item);
       res.status(201).send(item);
     })
     .catch(() => next(new BadRequestError(ERROR_MSG.validation)));
@@ -54,7 +54,7 @@ module.exports.likeClothingItem = (req, res, next) => {
     )
     .orFail()
     .then((item) => res.send(item))
-    .catch((err) => next(err));
+    .catch(() => next(new BadRequestError(ERROR_MSG.validation)));
 };
 
 module.exports.dislikeClothingItem = (req, res, next) => {
