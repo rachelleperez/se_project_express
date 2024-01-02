@@ -25,7 +25,7 @@ module.exports = function errorHandler(errIn, req, res, next) {
   }
   // default
   else {
-    err = new InternalServerError(ERROR_MSG.unathorizedUser);
+    err = new InternalServerError(ERROR_MSG.internalServerError);
   }
 
   // console.error all errors
