@@ -6,12 +6,8 @@ const { JWT_SECRET } = require("../utils/config");
 
 const {
   ERROR_MSG,
-  // BadRequestError,
   ConflictError,
-  // ForbiddenError,
-  // InternalServerError,
   NotFoundError,
-  // UnauthorizedError,
   BadRequestError,
 } = require("../utils/errors/index");
 

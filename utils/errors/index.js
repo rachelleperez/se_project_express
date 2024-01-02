@@ -18,9 +18,7 @@ const ERROR_MSG = {
   forbiddenRequest: "Unathorized Request",
   debug: "Debugging Error",
   validation: "Invalid Data",
-  invalidID: "Invalid ID",
-  internalServerError: "Internal Server Error",
-  unexpectedError: "Unexpected Error",
+  unexpectedError: "Unexpected Server Error",
 };
 
 module.exports = {
