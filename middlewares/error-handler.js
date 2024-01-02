@@ -19,8 +19,8 @@ module.exports = function errorHandler(errIn, req, res, next) {
   } else if ((!err) instanceof Error && err.name === "CastError") {
     err = new BadRequestError(ERROR_MSG.invalidID);
   }
-  // custom Error objects set in utils.error
-  else if (err instanceof Error) {
+  // custom Error objects set in utils.error (object is an Error but not specifically "Error")
+  else if (err instanceof Error && !err.constructor === Error) {
     err = errIn;
   }
   // default
