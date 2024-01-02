@@ -45,7 +45,7 @@ user.statics.findUserByCredentials = function findUserByCredentials(
 ) {
   // if any args missing
   if (email === undefined || password === undefined) {
-    return new BadRequestError(ERROR_MSG.badRequest);
+    throw new BadRequestError(ERROR_MSG.badRequest);
   }
 
   // trying to find the user by email
