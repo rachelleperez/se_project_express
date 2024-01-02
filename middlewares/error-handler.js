@@ -1,7 +1,7 @@
 const {
   ERROR_MSG,
-  BadRequestError,
-  NotFoundError,
+  // BadRequestError,
+  // NotFoundError,
   InternalServerError,
 } = require("../utils/errors/index");
 
