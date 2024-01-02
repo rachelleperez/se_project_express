@@ -17,7 +17,6 @@ const ERROR_MSG = {
   unknownId: "Unknown Id",
   forbiddenRequest: "Unathorized Request",
   debug: "Debugging Error",
-  badRequest: "Bad Request",
   validation: "Invalid Data",
   invalidID: "Invalid ID",
   internalServerError: "Internal Server Error",
