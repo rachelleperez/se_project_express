@@ -5,15 +5,17 @@ const {
 } = require("../utils/errors/index");
 
 module.exports = function errorHandler(errIn, req, res, next) {
+  console.log("Error received by errorHandler", errIn);
+
   // variable to choose appropriate error to use
   let err = null;
 
-  // if standard error with vague, use appropriate custom Error object
-  if (err.name === "ValidationError") {
+  // if standard error (not instances of error), use appropriate custom Error object
+  if ((!err) instanceof Error && err.name === "ValidationError") {
     err = new BadRequestError(ERROR_MSG.validation);
-  } else if (err.name === "DocumentNotFoundError") {
+  } else if ((!err) instanceof Error && err.name === "DocumentNotFoundError") {
     err = new NotFoundError(ERROR_MSG.unknownId);
-  } else if (err.name === "CastError") {
+  } else if ((!err) instanceof Error && err.name === "CastError") {
     err = new BadRequestError(ERROR_MSG.invalidID);
   }
   // otherwise, just keep existing error as is
