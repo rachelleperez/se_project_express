@@ -54,7 +54,14 @@ module.exports.likeClothingItem = (req, res, next) => {
     )
     .orFail()
     .then((item) => res.send(item))
-    .catch(() => next(new BadRequestError(ERROR_MSG.validation)));
+    .catch((e) => {
+      // if not validation error, then is not found
+      if (e.name !== "ValidationError") {
+        next(new NotFoundError(ERROR_MSG.unknownItemId));
+      } else {
+        next(new BadRequestError(ERROR_MSG.validation));
+      }
+    });
 };
 
 module.exports.dislikeClothingItem = (req, res, next) => {
