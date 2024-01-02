@@ -56,7 +56,7 @@ module.exports.likeClothingItem = (req, res, next) => {
     .then((item) => res.send(item))
     .catch((e) => {
       // if not validation error, then is not found
-      if (e.name !== "DocumentNotFoundError") {
+      if (e.name === "DocumentNotFoundError") {
         next(new NotFoundError(ERROR_MSG.unknownItemId));
       } else {
         next(new BadRequestError(ERROR_MSG.validation));
