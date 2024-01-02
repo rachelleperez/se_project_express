@@ -5,8 +5,8 @@ const {
   InternalServerError,
 } = require("../utils/errors/index");
 
-module.exports = function errorHandler(err, req, res, next) {
-  console.log("Error received by errorHandler", err);
+module.exports = function errorHandler(errIn, req, res, next) {
+  console.log("Error received by errorHandler", errIn);
 
   // // if standard error (not instances of error), use appropriate custom Error object
   // if (err.name === "ValidationError") {
@@ -17,16 +17,14 @@ module.exports = function errorHandler(err, req, res, next) {
   //   err = new BadRequestError(ERROR_MSG.invalidID);
   // }
 
-  if (err instanceof Error) {
-    console.error(err.message);
-    return res
-      .status(err.status)
-      .send({ name: err.name, message: err.message });
-  } else {
-    newErr = new InternalServerError(ERROR_MSG.unexpectedError);
-    console.error(newErr.message);
-    return res
-      .status(newErr.status)
-      .send({ name: newErr.name, message: newErr.message });
+  // set default behavior
+  let err = errIn;
+  if ((!err) instanceof Error) {
+    err = new InternalServerError(ERROR_MSG.unexpectedError);
   }
+
+  // console error, all errors
+  console.error(err.message);
+
+  return res.status(err.status).send({ name: err.name, message: err.message });
 };
