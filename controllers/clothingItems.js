@@ -42,7 +42,14 @@ module.exports.deleteClothingItem = (req, res, next) => {
       // else, this user cannot update item
       throw new ForbiddenError(ERROR_MSG.forbiddenRequest);
     })
-    .catch((err) => next(err));
+    .catch((err) => {
+      // check for wrong id first
+      if (e.name === "ValidationError") {
+        next(new BadRequestError(ERROR_MSG.validation));
+      } else {
+        next(err);
+      }
+    });
 };
 
 module.exports.likeClothingItem = (req, res, next) => {
@@ -55,7 +62,7 @@ module.exports.likeClothingItem = (req, res, next) => {
     .orFail()
     .then((item) => res.send(item))
     .catch((e) => {
-      // if not validation error, then is not found
+      // if user found, then validation error
       if (e.name === "DocumentNotFoundError") {
         next(new NotFoundError(ERROR_MSG.unknownItemId));
       } else {
@@ -74,7 +81,7 @@ module.exports.dislikeClothingItem = (req, res, next) => {
     .orFail()
     .then((item) => res.send(item))
     .catch((e) => {
-      // if not validation error, then is not found
+      // if user found, then validation error
       if (e.name === "DocumentNotFoundError") {
         next(new NotFoundError(ERROR_MSG.unknownItemId));
       } else {
