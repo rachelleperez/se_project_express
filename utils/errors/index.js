@@ -21,6 +21,7 @@ const ERROR_MSG = {
   validation: "Invalid Data",
   invalidID: "Invalid ID",
   internalServerError: "Internal Server Error",
+  unexpectedError: "Unexpected Error",
 };
 
 module.exports = {

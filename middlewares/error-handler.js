@@ -2,6 +2,7 @@ const {
   ERROR_MSG,
   BadRequestError,
   NotFoundError,
+  InternalServerError,
 } = require("../utils/errors/index");
 
 module.exports = function errorHandler(errIn, req, res, next) {
@@ -18,23 +19,19 @@ module.exports = function errorHandler(errIn, req, res, next) {
   } else if ((!err) instanceof Error && err.name === "CastError") {
     err = new BadRequestError(ERROR_MSG.invalidID);
   }
-  // otherwise, just keep existing error as is
-  else {
+  // custom Error objects set in utils.error
+  else if (err instanceof Error) {
     err = errIn;
+  }
+  // default
+  else {
+    err = new InternalServerError(ERROR_MSG.unathorizedUser);
   }
 
   // console.error all errors
   console.error(err.message);
 
-  if (err instanceof Error) {
-    return res
-      .status(err.status || 500)
-      .send({ name: err.name, message: err.message });
-  }
-
-  // default behavior, just in case
-  return res.status(500).send({
-    name: "InternalServerError",
-    message: "Unexpected Server Error",
-  });
+  return res
+    .status(err.status || 500)
+    .send({ name: err.name, message: err.message });
 };
