@@ -6,6 +6,7 @@ const auth = require("./middlewares/auth");
 const { PORT = 3001 } = process.env;
 const { login, createUser } = require("./controllers/users");
 const { getClothingItems } = require("./controllers/clothingItems");
+const errorHandler = require("./middlewares/error-handler");
 
 const app = express();
 
@@ -30,11 +31,8 @@ app.get("/items", getClothingItems);
 app.use(auth);
 app.use(routes);
 
-// centralized error handling
-app.use((err, req, res, next) => {
-  console.error(err);
-  return res.status(500).send({ message: err.message });
-});
+// centralized error handler
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`App listening at port ${PORT}`);

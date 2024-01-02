@@ -1,18 +1,12 @@
 const clothingItem = require("../models/clothingItem");
-const { HTTP_STATUS, handleRequestError } = require("../utils/errors");
 
 const {
   ERROR_MSG,
-  BadRequestError,
-  ConflictError,
   ForbiddenError,
-  InternalServerError,
   NotFoundError,
-  UnauthorizedError,
 } = require("../utils/errors/index");
 
 module.exports.createClothingItem = (req, res) => {
-  // console.log(arguments[0]);
   console.log(req.body);
 
   const { name, weather, imageUrl } = req.body;
@@ -21,26 +15,23 @@ module.exports.createClothingItem = (req, res) => {
     .create({ name, weather, imageUrl, owner: req.user._id })
     .then((item) => {
       console.log(item);
-      res.status(HTTP_STATUS.Created).send(item);
+      res.status(201).send(item);
     })
-    .catch((e) => handleRequestError(res, e));
+    .catch((err) => next(err));
 };
 
 module.exports.getClothingItems = (req, res) => {
-  // console.log("Getting Clothing Items");
   clothingItem
     .find({})
-    // .then((items) => res.status(HTTP_STATUS.OK).send(items)) // Status 200 is added by default: https://nodejs.org/en/guides/anatomy-of-an-http-transaction#http-status-code
     .then((items) => res.send(items))
-    .catch((e) => handleRequestError(res, e));
+    .catch((err) => next(err));
 };
 
 module.exports.deleteClothingItem = (req, res) => {
   const { itemId } = req.params;
-  // console.log(itemId);
   clothingItem
     .findById(itemId)
-    .orFail(new Error(ERROR_MSG.unknownItemId))
+    .orFail(new NotFoundError(ERROR_MSG.unknownItemId))
     // found Item
     .then((item) => {
       // If user requesting change, items's owner = user authorized to update items
@@ -48,9 +39,9 @@ module.exports.deleteClothingItem = (req, res) => {
         return item.deleteOne().then(res.send(item));
       }
       // else, this user cannot update item
-      return Promise.reject(new Error(ERROR_MSG.forbiddenRequest));
+      throw new ForbiddenError(ERROR_MSG.forbiddenRequest);
     })
-    .catch((e) => handleRequestError(res, e));
+    .catch((err) => next(err));
 };
 
 module.exports.likeClothingItem = (req, res) => {
@@ -62,7 +53,7 @@ module.exports.likeClothingItem = (req, res) => {
     )
     .orFail()
     .then((item) => res.send(item))
-    .catch((e) => handleRequestError(res, e));
+    .catch((err) => next(err));
 };
 
 module.exports.dislikeClothingItem = (req, res) => {
@@ -74,5 +65,5 @@ module.exports.dislikeClothingItem = (req, res) => {
     )
     .orFail()
     .then((item) => res.send(item))
-    .catch((e) => handleRequestError(res, e));
+    .catch((err) => next(err));
 };

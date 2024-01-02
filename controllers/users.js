@@ -4,16 +4,15 @@ const user = require("../models/user");
 
 const { JWT_SECRET } = require("../utils/config");
 
-const { HTTP_STATUS, handleRequestError } = require("../utils/errors");
-
 const {
   ERROR_MSG,
-  BadRequestError,
+  // BadRequestError,
   ConflictError,
-  ForbiddenError,
-  InternalServerError,
+  // ForbiddenError,
+  // InternalServerError,
   NotFoundError,
   UnauthorizedError,
+  BadRequestError,
 } = require("../utils/errors/index");
 
 module.exports.createUser = (req, res) => {
@@ -24,14 +23,14 @@ module.exports.createUser = (req, res) => {
     .then((userData) => {
       // if email found
       if (userData) {
-        return Promise.reject(new Error(ERROR_MSG.existingEmail));
+        return next(new ConflictError(ERROR_MSG.existingEmail));
       }
       // else, new email
       return bcrypt
         .hash(req.body.password, 10) // dont extract password until needed
         .then((hash) => user.create({ name, avatar, email, password: hash }))
         .then((userIn) => {
-          res.status(HTTP_STATUS.Created).send({
+          res.status(201).send({
             data: {
               name: userIn.name,
               avatar: userIn.avatar,
@@ -39,29 +38,19 @@ module.exports.createUser = (req, res) => {
             },
           }); // don't return password
         })
-        .catch((e) => {
-          e.message = ERROR_MSG.invalidPassword;
-          handleRequestError(res, e);
+        .catch(() => {
+          throw new UnauthorizedError(ERROR_MSG.invalidPassword);
         });
     })
-    .catch((e) => handleRequestError(res, e));
+    .catch((err) => next(err));
 };
 
 module.exports.getUsers = (req, res) => {
   user // orFail not needed, is no data, ok with empty array
     .find({})
-    // .then((users) => res.status(HTTP_STATUS.OK).send(users)) // // Status 200 is added by default: https://nodejs.org/en/guides/anatomy-of-an-http-transaction#http-status-code
     .then((users) => res.send(users))
-    .catch((e) => handleRequestError(res, e));
+    .catch((err) => next(err));
 };
-
-// module.exports.getUser = (req, res) => {
-//   user
-//     .findById(req.params.userId)
-//     .orFail()
-//     .then((userData) => res.send(userData))
-//     .catch((e) => handleRequestError(res, e));
-// };
 
 module.exports.login = (req, res) => {
   const { email, password } = req.body;
@@ -79,17 +68,7 @@ module.exports.login = (req, res) => {
 
       res.send({ token }); // return the token to client
     })
-    .catch((e) => {
-      console.log(e.message);
-      // authentication error
-      // if (!email | !password) {
-      //   e.message = ERROR_MSG.badRequest;
-      // } else {
-      //   e.message = ERROR_MSG.unathorizedUser;
-      // }
-      // console.log(e.message);
-      handleRequestError(res, e);
-    });
+    .catch((err) => next(err));
 };
 
 module.exports.getCurrentUser = (req, res) => {
@@ -99,9 +78,8 @@ module.exports.getCurrentUser = (req, res) => {
     .then((userData) => {
       res.send(userData);
     })
-    .catch((e) => {
-      e.message = ERROR_MSG.unknownUserId;
-      handleRequestError(res, e);
+    .catch(() => {
+      next(new NotFoundError(ERROR_MSG.unknownUserId));
     });
 };
 
@@ -120,7 +98,11 @@ module.exports.updateCurrentUser = (req, res) => {
     .orFail()
     .then((userData) => res.send(userData))
     .catch((e) => {
-      if (e.name !== "ValidationError") e.message = ERROR_MSG.unknownUserId; // if not validation error, then user not found
-      handleRequestError(res, e);
+      // if not validation error, then user not found
+      if (e.name !== "ValidationError") {
+        next(new NotFoundError(ERROR_MSG.unknownUserId));
+      } else {
+        next(new BadRequestError(ERROR_MSG.validation));
+      }
     });
 };

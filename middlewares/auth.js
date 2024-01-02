@@ -1,14 +1,13 @@
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../utils/config");
-const { HTTP_STATUS } = require("../utils/errors");
 
 const {
   ERROR_MSG,
-  BadRequestError,
-  ConflictError,
-  ForbiddenError,
-  InternalServerError,
-  NotFoundError,
+  // BadRequestError,
+  // ConflictError,
+  // ForbiddenError,
+  // InternalServerError,
+  // NotFoundError,
   UnauthorizedError,
 } = require("../utils/errors/index");
 
@@ -18,9 +17,7 @@ module.exports = (req, res, next) => {
 
   // check that the header exists and starts with 'Bearer '
   if (!authorization || !authorization.startsWith("Bearer ")) {
-    return res
-      .status(HTTP_STATUS.Unathorized)
-      .send({ message: ERROR_MSG.authorizationRequired });
+    return next(new UnauthorizedError(ERROR_MSG.authorizationRequired));
   }
 
   // auth header exists and is in correct format
@@ -32,10 +29,7 @@ module.exports = (req, res, next) => {
   try {
     payload = jwt.verify(token, JWT_SECRET);
   } catch (err) {
-    // otherwise, return an error
-    return res
-      .status(HTTP_STATUS.Unathorized)
-      .send({ message: ERROR_MSG.authorizationRequired });
+    return next(new UnauthorizedError(ERROR_MSG.authorizationRequired));
   }
 
   /* Save payload to request. This makes the payload available

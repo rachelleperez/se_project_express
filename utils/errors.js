@@ -1,7 +1,7 @@
 // potential HTTP status options
 const HTTP_STATUS = {
   OK: 200, // request suceeded, default response status | https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/200
-  Created: 201, // Creation of a resource | https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/201
+  // Created: 201, // Creation of a resource | https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/201
   BadRequest: 400, // Invalid Data Passed | https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400
   Unathorized: 401, // https//developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
   Forbidden: 403, // https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
@@ -27,6 +27,7 @@ const ERROR_MSG = {
   validation: "Invalid Data",
   invalidID: "Invalid ID",
   internalServerError: "Internal Server Error",
+  notFound: "Requested resource not found",
 };
 
 const errorStatusMap = {
@@ -46,7 +47,7 @@ const errorStatusMap = {
 };
 
 // logs error and sends correct status and message
-const handleRequestError = (res, errIn) => {
+const errorHandler = (errIn, req, res, next) => {
   // copied to be able to override message
   const err = errIn;
 
@@ -73,7 +74,4 @@ const handleRequestError = (res, errIn) => {
   }
 };
 
-module.exports = {
-  HTTP_STATUS,
-  handleRequestError,
-};
+// no more exports
