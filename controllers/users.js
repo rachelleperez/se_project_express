@@ -26,23 +26,30 @@ module.exports.createUser = (req, res, next) => {
         return next(new ConflictError(ERROR_MSG.existingEmail));
       }
       // else, new email
-      return bcrypt
-        .hash(req.body.password, 10) // dont extract password until needed
-        .then((hash) => user.create({ name, avatar, email, password: hash }))
-        .then((userIn) => {
-          res.status(201).send({
-            data: {
-              name: userIn.name,
-              avatar: userIn.avatar,
-              email: userIn.email,
-            },
-          }); // don't return password
-        })
-        .catch(() => {
-          throw new UnauthorizedError(ERROR_MSG.invalidPassword);
-        });
+      return (
+        bcrypt
+          .hash(req.body.password, 10) // dont extract password until needed
+          .then((hash) => user.create({ name, avatar, email, password: hash }))
+          .then((userIn) => {
+            res.status(201).send({
+              data: {
+                name: userIn.name,
+                avatar: userIn.avatar,
+                email: userIn.email,
+              },
+            }); // don't return password
+          })
+          // if it reaches catch below, it was a validation error
+          .catch((err) => {
+            // console.log("Error from inner catch", err);
+            throw new BadRequestError(ERROR_MSG.validation);
+          })
+      );
     })
-    .catch((err) => next(err));
+    .catch((err) => {
+      // console.log("Error from outer catch", err);
+      next(err);
+    });
 };
 
 module.exports.getUsers = (req, res, next) => {
