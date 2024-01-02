@@ -48,6 +48,7 @@ module.exports.createUser = (req, res) => {
 module.exports.getUsers = (req, res) => {
   user // orFail not needed, is no data, ok with empty array
     .find({})
+    // .then((users) => res.status(HTTP_STATUS.OK).send(users)) // // Status 200 is added by default: https://nodejs.org/en/guides/anatomy-of-an-http-transaction#http-status-code
     .then((users) => res.send(users))
     .catch((err) => next(err));
 };

@@ -30,6 +30,7 @@ module.exports = function errorHandler(errIn, req, res, next) {
       .send({ name: err.name, message: err.message });
   }
 
+  // default behavior, just in case
   return res.status(500).send({
     name: "InternalServerError",
     message: "Unexpected Server Error",

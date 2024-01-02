@@ -2,7 +2,11 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const isEmail = require("validator/lib/isEmail");
 const bcrypt = require("bcrypt");
-const { ERROR_MSG } = require("../utils/errors/index");
+const {
+  ERROR_MSG,
+  BadRequestError,
+  UnauthorizedError,
+} = require("../utils/errors/index");
 
 const user = new mongoose.Schema({
   name: {
@@ -41,7 +45,7 @@ user.statics.findUserByCredentials = function findUserByCredentials(
 ) {
   // if any args missing
   if (email === undefined || password === undefined) {
-    return Promise.reject(new Error(ERROR_MSG.badRequest));
+    return new BadRequestError(ERROR_MSG.badRequest);
   }
 
   // trying to find the user by email
@@ -50,13 +54,13 @@ user.statics.findUserByCredentials = function findUserByCredentials(
     .then((userData) => {
       // not found  email - rejecting the promise
       if (!userData) {
-        return Promise.reject(new Error(ERROR_MSG.invalidEmail));
+        return new UnauthorizedError(ERROR_MSG.invalidEmail);
       }
 
       // found email, checking password
       return bcrypt.compare(password, userData.password).then((matched) => {
         if (!matched) {
-          return Promise.reject(new Error(ERROR_MSG.invalidPassword));
+          return new UnauthorizedError(ERROR_MSG.invalidPassword);
         }
         return userData;
       });
