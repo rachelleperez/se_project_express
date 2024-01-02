@@ -44,7 +44,7 @@ module.exports.deleteClothingItem = (req, res, next) => {
     })
     .catch((err) => {
       // check for wrong id first
-      if (e.name === "ValidationError") {
+      if (err.name === "ValidationError") {
         next(new BadRequestError(ERROR_MSG.validation));
       } else {
         next(err);
