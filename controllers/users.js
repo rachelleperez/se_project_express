@@ -69,6 +69,8 @@ module.exports.login = (req, res, next) => {
   return user
     .findUserByCredentials(email, password)
     .then((userData) => {
+      console.log("Successful Login");
+      console.log("userData: ", userData);
       // authentication successful!
       const token = jwt.sign({ _id: userData._id }, JWT_SECRET, {
         expiresIn: "7d",
