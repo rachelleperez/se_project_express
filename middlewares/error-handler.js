@@ -1,8 +1,6 @@
 const { ERROR_MSG, InternalServerError } = require("../utils/errors/index");
 
 module.exports = function errorHandler(errIn, req, res, next) {
-  console.log("Error received by errorHandler", errIn);
-
   // set default behavior
   let err = errIn;
   if ((!err) instanceof Error) {
