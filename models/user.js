@@ -45,7 +45,7 @@ user.statics.findUserByCredentials = function findUserByCredentials(
 ) {
   // if any args missing
   if (email === undefined || password === undefined) {
-    throw new BadRequestError(ERROR_MSG.badRequest);
+    throw new BadRequestError(ERROR_MSG.validation);
   }
 
   // trying to find the user by email
@@ -54,14 +54,12 @@ user.statics.findUserByCredentials = function findUserByCredentials(
     .then((userData) => {
       // not found  email - rejecting the promise
       if (!userData) {
-        console.log("Email does not exist in database");
         throw new UnauthorizedError(ERROR_MSG.invalidEmail);
       }
 
       // found email, checking password
       return bcrypt.compare(password, userData.password).then((matched) => {
         if (!matched) {
-          console.log("Email found but password doesnt match");
           throw new UnauthorizedError(ERROR_MSG.invalidPassword);
         }
         return userData;
