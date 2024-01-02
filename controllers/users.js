@@ -11,7 +11,7 @@ const {
   // ForbiddenError,
   // InternalServerError,
   NotFoundError,
-  UnauthorizedError,
+  // UnauthorizedError,
   BadRequestError,
 } = require("../utils/errors/index");
 
@@ -40,7 +40,7 @@ module.exports.createUser = (req, res, next) => {
             }); // don't return password
           })
           // if it reaches catch below, it was a validation error
-          .catch((err) => {
+          .catch(() => {
             // console.log("Error from inner catch", err);
             throw new BadRequestError(ERROR_MSG.validation);
           })
