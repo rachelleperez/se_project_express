@@ -4,6 +4,7 @@ const {
   ERROR_MSG,
   ForbiddenError,
   NotFoundError,
+  BadRequestError,
 } = require("../utils/errors/index");
 
 module.exports.createClothingItem = (req, res, next) => {
@@ -17,7 +18,7 @@ module.exports.createClothingItem = (req, res, next) => {
       console.log(item);
       res.status(201).send(item);
     })
-    .catch((err) => next(err));
+    .catch(() => next(new BadRequestError(ERROR_MSG.validation)));
 };
 
 module.exports.getClothingItems = (req, res, next) => {
