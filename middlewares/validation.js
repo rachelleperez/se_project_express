@@ -92,30 +92,9 @@ const validateId = celebrate({
     .or("itemId", "userId"), // either should be present
 });
 
-// // helper for next function
-// const userIDReqs = Joi.object().keys({
-//   _id: Joi.string().hex().length(24).messages({
-//     "string.empty": "User ID is a required parameter",
-//     "string.hex": "The User ID is not a hex value",
-//     "string.length": "The User ID must be 24 characters long",
-//   }),
-// });
-
-// user id located in req.user._id
-// const validateUserId = celebrate({
-//   user: Joi.object().keys({
-//     _id: Joi.string().hex().length(24).messages({
-//       "string.empty": "User ID is a required parameter",
-//       "string.hex": "The User ID is not a hex value",
-//       "string.length": "The User ID must be 24 characters long",
-//     }),
-//   }),
-// });
-
 module.exports = {
   validateCreateClothingItem,
   validateCreateUser,
   validateLogin,
   validateId,
-  //   validateUserId,
 };
