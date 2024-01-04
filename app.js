@@ -9,10 +9,10 @@ const { PORT = 3001 } = process.env;
 const { login, createUser } = require("./controllers/users");
 const { getClothingItems } = require("./controllers/clothingItems");
 
-// const {
-//   validateCreateUser,
-//   validateLogin,
-// } = require("./middlewares/validation");
+const {
+  validateCreateUser,
+  // validateLogin,
+} = require("./middlewares/validation");
 const errorHandler = require("./middlewares/error-handler");
 
 const app = express();
@@ -31,7 +31,7 @@ app.use(express.json());
 
 // import routes that don't need auth middleware
 app.post("/signin", login);
-app.post("/signup", createUser);
+app.post("/signup", validateCreateUser, createUser);
 app.get("/items", getClothingItems);
 
 // add authorization for remaining routes

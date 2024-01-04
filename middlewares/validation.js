@@ -43,17 +43,6 @@ const validateCreateClothingItem = celebrate({
       "any.only": "Weather type values can only be: hot, warm, or cold",
     }),
   }),
-
-  //   // headers: confirming token will be able to be extracted instead of waiting until middleware whichwoulr return UnathorizedUser error
-  //   headers: Joi.object().keys({
-  //     authorization: Joi.string()
-  //       .required()
-  //       .custom(validateAuthorizationHeader)
-  //       .messages({
-  //         "string.empty": "Inbound user token missing",
-  //         "string.token": "Inbound user token is not valid",
-  //       }),
-  //   }),
 });
 
 const validateCreateUser = celebrate({
