@@ -73,17 +73,23 @@ const validateLogin = celebrate({
   }),
 });
 
-// VALIDATION 4 > IDs must be a hexadecimal value length of 24 characters.
-
-const validateItemId = celebrate({
+// validates user or item id
+const validateId = celebrate({
   // params: IDs must be a hexadecimal value length of 24 characters.
-  params: Joi.object().keys({
-    itemId: Joi.string().hex().length(24).messages({
-      "string.empty": "The Item ID is a required parameter",
-      "string.hex": "The Item ID is not a hex value",
-      "string.length": "The Item ID must be 24 characters long",
-    }),
-  }),
+  params: Joi.object()
+    .keys({
+      itemId: Joi.string().hex().length(24).messages({
+        "string.empty": "The Item ID is a required parameter",
+        "string.hex": "The Item ID is not a hex value",
+        "string.length": "The Item ID must be 24 characters long",
+      }),
+      userId: Joi.string().hex().length(24).messages({
+        "string.empty": "User ID is missing",
+        "string.hex": "User ID could not be converted to hex",
+        "string.length": "User ID must be 24 characters long",
+      }),
+    })
+    .or("itemId", "userId"), // either should be present
 });
 
 // // helper for next function
@@ -110,6 +116,6 @@ module.exports = {
   validateCreateClothingItem,
   validateCreateUser,
   validateLogin,
-  validateItemId,
+  validateId,
   //   validateUserId,
 };
