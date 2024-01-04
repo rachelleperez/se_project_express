@@ -9,6 +9,7 @@ const { getClothingItems } = require("./controllers/clothingItems");
 const errorHandler = require("./middlewares/error-handler");
 
 const app = express();
+const { errors } = require("celebrate");
 
 mongoose
   .connect("mongodb://127.0.0.1:27017/wtwr_db")
@@ -30,6 +31,9 @@ app.get("/items", getClothingItems);
 // add authorization for remaining routes
 app.use(auth);
 app.use(routes);
+
+// celebrate error handler
+app.use(errors());
 
 // centralized error handler
 app.use(errorHandler);

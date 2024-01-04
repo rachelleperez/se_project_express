@@ -7,10 +7,12 @@ const {
   dislikeClothingItem,
 } = require("../controllers/clothingItems");
 
+const { validateCreateClothingItem } = require(".././middlewares/validation");
+
 // CRUD
 
 // Create
-router.post("/", createClothingItem);
+router.post("/", createClothingItem, validateCreateClothingItem);
 
 // Read
 // router.get("/", getClothingItems); // spec: do not protect with auth
