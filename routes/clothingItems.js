@@ -7,7 +7,10 @@ const {
   dislikeClothingItem,
 } = require("../controllers/clothingItems");
 
-const { validateCreateClothingItem } = require("../middlewares/validation");
+const {
+  validateCreateClothingItem,
+  validateItemId,
+} = require("../middlewares/validation");
 
 // CRUD
 
@@ -18,12 +21,12 @@ router.post("/", validateCreateClothingItem, createClothingItem);
 // router.get("/", getClothingItems); // spec: do not protect with auth
 
 // Update: Add like
-router.put("/:itemId/likes", likeClothingItem);
+router.put("/:itemId/likes", validateItemId, likeClothingItem);
 
 // Delete - Clothing Item
-router.delete("/:itemId", deleteClothingItem);
+router.delete("/:itemId", validateItemId, deleteClothingItem);
 
 // Delete - Like
-router.delete("/:itemId/likes", dislikeClothingItem);
+router.delete("/:itemId/likes", validateItemId, dislikeClothingItem);
 
 module.exports = router;

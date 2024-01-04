@@ -12,13 +12,6 @@ const validateURL = (value, helpers) => {
   return helpers.error("string.url");
 };
 
-// // VALIDATION HELPER 2 > IDs must be a hexadecimal value length of 24 characters.
-// const validateIDFormat = celebrate({
-//   params: Joi.object().keys({
-//     itemId: Joi.string().hex().length(24),
-//   }),
-// });
-
 // Authorization Header starts with "Bearer "
 
 // const validateAuthorizationHeader = (value, helpers) => {
@@ -76,7 +69,18 @@ const validateLogin = celebrate({
   }),
 });
 
-// VALIDATION 4 > user or clothing id format, each time _id is accessed (req.body)
+// VALIDATION 4 > IDs must be a hexadecimal value length of 24 characters.
+
+const validateItemId = celebrate({
+  // params: IDs must be a hexadecimal value length of 24 characters.
+  params: Joi.object().keys({
+    itemId: Joi.string().hex().length(24).messages({
+      "string.empty": "The Item ID is a required parameter",
+      "string.hex": "The Item ID is not a hex value",
+      "string.length": "The Item ID must be 24 characters long",
+    }),
+  }),
+});
 
 // IDs must be a hexadecimal value length of 24 characters.
 
@@ -88,4 +92,5 @@ module.exports = {
   validateCreateClothingItem,
   validateCreateUser,
   validateLogin,
+  validateItemId,
 };
