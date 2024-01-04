@@ -41,13 +41,17 @@ const validateCreateClothingItem = celebrate({
 const validateCreateUser = celebrate({
   // body: name is required and has 2-30 chars, avat is required and valid, email is required & valid, password is required
   body: Joi.object().keys({
-    name: Joi.string().required().min(2).max(30),
+    name: Joi.string().required().min(2).max(30).messages({
+      "string.empty": "The name field is required",
+      "string.min": "The name must have at least 2 characters",
+      "string.max": "The name must have at max 30 characters",
+    }),
     avatar: Joi.string().required().custom(validateURL).messages({
       "string.empty": "The Avatar URL field is required",
       "string.url": "The Avatar URL is not a valid url",
     }),
     email: Joi.string().required().email().messages({
-      "string.empty": "The Avatar URL field is required",
+      "string.empty": "The email field is required",
       "string.email": "The email provided is a valid email",
     }),
     password: Joi.string().required().messages({
@@ -60,7 +64,7 @@ const validateLogin = celebrate({
   // body: email is required & valid, password is required
   body: Joi.object().keys({
     email: Joi.string().required().email().messages({
-      "string.empty": "The Avatar URL field is required",
+      "string.empty": "The email field is required",
       "string.email": "The email provided is a valid email",
     }),
     password: Joi.string().required().messages({
@@ -82,15 +86,25 @@ const validateItemId = celebrate({
   }),
 });
 
-// IDs must be a hexadecimal value length of 24 characters.
+// helper for next function
+const userIDReqs = Joi.object().keys({
+  _id: Joi.string().hex().length(24).messages({
+    "string.empty": "User ID is a required parameter",
+    "string.hex": "The User ID is not a hex value",
+    "string.length": "The User ID must be 24 characters long",
+  }),
+});
 
-// VALIDATION 5 > user or clothing id format, each time _id is accessed (headers, parameters, or req.query)
-
-// same function as before???
+// user id located in req.user._id
+const validateUserId = celebrate({
+  // params: IDs must be a hexadecimal value length of 24 characters.
+  user: userIDReqs,
+});
 
 module.exports = {
   validateCreateClothingItem,
   validateCreateUser,
   validateLogin,
   validateItemId,
+  validateUserId,
 };
