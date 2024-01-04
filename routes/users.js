@@ -1,7 +1,8 @@
 const router = require("express").Router();
 
 const { getCurrentUser, updateCurrentUser } = require("../controllers/users");
-const { validateId } = require("../middlewares/validation");
+// const { validateId } = require("../middlewares/validation");
+
 // CRUD
 
 // Create
