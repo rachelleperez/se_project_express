@@ -21,12 +21,12 @@ const validateURL = (value, helpers) => {
 
 // Authorization Header starts with "Bearer "
 
-const validateAuthorizationHeader = (value, helpers) => {
-  if (value.startsWith("Bearer ")) {
-    return value;
-  }
-  return helpers.error("string.token");
-};
+// const validateAuthorizationHeader = (value, helpers) => {
+//   if (value.startsWith("Bearer ")) {
+//     return value;
+//   }
+//   return helpers.error("string.token");
+// };
 
 // ----------------- VALIDATION FUNCTIONS -------------------
 
