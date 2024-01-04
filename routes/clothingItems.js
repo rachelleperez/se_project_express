@@ -12,7 +12,7 @@ const { validateCreateClothingItem } = require("../middlewares/validation");
 // CRUD
 
 // Create
-router.post("/", createClothingItem, validateCreateClothingItem);
+router.post("/", validateCreateClothingItem, createClothingItem);
 
 // Read
 // router.get("/", getClothingItems); // spec: do not protect with auth

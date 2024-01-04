@@ -30,8 +30,8 @@ app.use(cors());
 app.use(express.json());
 
 // import routes that don't need auth middleware
-app.post("/signin", login, validateLogin);
-app.post("/signup", createUser, validateCreateUser);
+app.post("/signin", validateLogin, login);
+app.post("/signup", validateCreateUser, createUser);
 app.get("/items", getClothingItems);
 
 // add authorization for remaining routes
