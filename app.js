@@ -4,6 +4,7 @@ const cors = require("cors");
 const { errors } = require("celebrate");
 
 const auth = require("./middlewares/auth");
+const { requestLogger, errorLogger } = require("./middlewares/logger");
 
 const { PORT = 3001 } = process.env;
 const { login, createUser } = require("./controllers/users");
@@ -28,6 +29,7 @@ const routes = require("./routes");
 
 app.use(cors());
 app.use(express.json());
+app.use(requestLogger); // before all route handlers
 
 // import routes that don't need auth middleware
 app.post("/signin", login);
@@ -38,7 +40,10 @@ app.get("/items", getClothingItems);
 app.use(auth);
 app.use(routes);
 
-// celebrate error handler
+// enabling the error logger, after routers, before error handlers
+app.use(errorLogger);
+
+// celebrate (validation) error handler
 app.use(errors());
 
 // centralized error handler
