@@ -1,6 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const { errors } = require("celebrate");
+
 const auth = require("./middlewares/auth");
 
 const { PORT = 3001 } = process.env;
@@ -9,7 +11,6 @@ const { getClothingItems } = require("./controllers/clothingItems");
 const errorHandler = require("./middlewares/error-handler");
 
 const app = express();
-const { errors } = require("celebrate");
 
 mongoose
   .connect("mongodb://127.0.0.1:27017/wtwr_db")

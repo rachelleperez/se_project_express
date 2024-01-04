@@ -7,7 +7,7 @@ const {
   dislikeClothingItem,
 } = require("../controllers/clothingItems");
 
-const { validateCreateClothingItem } = require(".././middlewares/validation");
+const { validateCreateClothingItem } = require("../middlewares/validation");
 
 // CRUD
 

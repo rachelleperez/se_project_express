@@ -12,12 +12,12 @@ const validateURL = (value, helpers) => {
   return helpers.error("string.uri");
 };
 
-// VALIDATION HELPER 2 > IDs must be a hexadecimal value length of 24 characters.
-const validateId = celebrate({
-  params: Joi.object().keys({
-    itemId: Joi.string().hex().length(24),
-  }),
-});
+// // VALIDATION HELPER 2 > IDs must be a hexadecimal value length of 24 characters.
+// const validateIDFormat = celebrate({
+//   params: Joi.object().keys({
+//     itemId: Joi.string().hex().length(24),
+//   }),
+// });
 
 // VALIDATION HELPER 3 > Authorization Header starts with Bearere
 
