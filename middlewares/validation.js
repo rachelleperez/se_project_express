@@ -9,7 +9,7 @@ const validateURL = (value, helpers) => {
   if (validator.isURL(value)) {
     return value;
   }
-  return helpers.error("string.url");
+  return helpers.error("string.uri");
 };
 
 // ----------------- VALIDATION FUNCTIONS -------------------
@@ -20,7 +20,7 @@ const validateCreateClothingItem = celebrate({
     name: Joi.string().required().min(2).max(30),
     imageUrl: Joi.string().required().custom(validateURL).messages({
       "string.empty": "The Image field, with an image URL, is required",
-      "string.url": "The Image URL is not a valid url",
+      "string.uri": "The Image URL is not a valid url",
     }),
     weather: Joi.string().valid("hot", "warm", "cold").required().messages({
       "string.empty": "Weather type missing",
@@ -39,7 +39,7 @@ const validateCreateUser = celebrate({
     }),
     avatar: Joi.string().required().custom(validateURL).messages({
       "string.empty": "The Avatar URL field is required",
-      "string.url": "The Avatar URL is not a valid url",
+      "string.uri": "The Avatar URL is not a valid url",
     }),
     email: Joi.string().required().email().messages({
       "string.empty": "The email field is required",
@@ -67,20 +67,19 @@ const validateLogin = celebrate({
 // validates user or item id
 const validateId = celebrate({
   // params: IDs must be a hexadecimal value length of 24 characters.
-  params: Joi.object()
-    .keys({
-      itemId: Joi.string().hex().length(24).messages({
-        "string.empty": "The Item ID is a required parameter",
-        "string.hex": "The Item ID is not a hex value",
-        "string.length": "The Item ID must be 24 characters long",
-      }),
-      userId: Joi.string().hex().length(24).messages({
-        "string.empty": "User ID is missing",
-        "string.hex": "User ID could not be converted to hex",
-        "string.length": "User ID must be 24 characters long",
-      }),
-    })
-    .or("itemId", "userId"), // either should be present
+  params: Joi.object().keys({
+    itemId: Joi.string().hex().length(24).messages({
+      "string.empty": "The Item ID is a required parameter",
+      "string.hex": "The Item ID is not a hex value",
+      "string.length": "The Item ID must be 24 characters long",
+    }),
+    userId: Joi.string().hex().length(24).messages({
+      "string.empty": "User ID is missing",
+      "string.hex": "User ID could not be converted to hex",
+      "string.length": "User ID must be 24 characters long",
+    }),
+  }),
+  // .or("itemId", "userId"), // either should be present
 });
 
 module.exports = {
