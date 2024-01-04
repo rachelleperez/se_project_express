@@ -12,15 +12,6 @@ const validateURL = (value, helpers) => {
   return helpers.error("string.url");
 };
 
-// Authorization Header starts with "Bearer "
-
-// const validateAuthorizationHeader = (value, helpers) => {
-//   if (value.startsWith("Bearer ")) {
-//     return value;
-//   }
-//   return helpers.error("string.token");
-// };
-
 // ----------------- VALIDATION FUNCTIONS -------------------
 
 const validateCreateClothingItem = celebrate({
