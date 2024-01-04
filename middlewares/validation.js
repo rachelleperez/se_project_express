@@ -9,7 +9,7 @@ const validateURL = (value, helpers) => {
   if (validator.isURL(value)) {
     return value;
   }
-  return helpers.error("string.uri");
+  return helpers.error("string.url");
 };
 
 // // VALIDATION HELPER 2 > IDs must be a hexadecimal value length of 24 characters.
@@ -36,7 +36,7 @@ const validateCreateClothingItem = celebrate({
     name: Joi.string().required().min(2).max(30),
     imageUrl: Joi.string().required().custom(validateURL).messages({
       "string.empty": "The Image field, with an image URL, is required",
-      "string.uri": "The Image URL is not a valid url",
+      "string.url": "The Image URL is not a valid url",
     }),
     weather: Joi.string().valid("hot", "warm", "cold").required().messages({
       "string.empty": "Weather type missing",
@@ -51,7 +51,7 @@ const validateCreateUser = celebrate({
     name: Joi.string().required().min(2).max(30),
     avatar: Joi.string().required().custom(validateURL).messages({
       "string.empty": "The Avatar URL field is required",
-      "string.uri": "The Avatar URL is not a valid url",
+      "string.url": "The Avatar URL is not a valid url",
     }),
     email: Joi.string().required().email().messages({
       "string.empty": "The Avatar URL field is required",
