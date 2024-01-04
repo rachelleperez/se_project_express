@@ -30,8 +30,6 @@ const validateAuthorizationHeader = (value, helpers) => {
 
 // ----------------- VALIDATION FUNCTIONS -------------------
 
-// Validation request for CreateClothingItem
-
 const validateCreateClothingItem = celebrate({
   // body: name is required and has 2-30 chars, imageURL is a valid url
   body: Joi.object().keys({
@@ -58,17 +56,8 @@ const validateCreateClothingItem = celebrate({
   }),
 });
 
-// VALIDATION 2 > signup (req.body)
-
-// const { name, avatar, email } = req.body;
-
-// The user name is a string of between 2 and 30 characters.
-// The user avatar is a required string in a URL format.
-// Email is a required string in a valid email format.
-// Password is a required string.
-
 const validateCreateUser = celebrate({
-  // body: name is required and has 2-30 chars, imageURL is a valid url
+  // body: name is required and has 2-30 chars, avat is required and valid, email is required & valid, password is required
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
     avatar: Joi.string().required().custom(validateURL).messages({
@@ -85,12 +74,18 @@ const validateCreateUser = celebrate({
   }),
 });
 
-// REMEMBER avatar is optional!!
-
-// VALIDATION 3 > signin (req.body)
-
-// Email is a required string in a valid email format.
-// Password is a required string.
+const validateLogin = celebrate({
+  // body: email is required & valid, password is required
+  body: Joi.object().keys({
+    email: Joi.string().required().email().messages({
+      "string.empty": "The Avatar URL field is required",
+      "string.email": "The email provided is a valid email",
+    }),
+    password: Joi.string().required().messages({
+      "string.empty": "The password field is required",
+    }),
+  }),
+});
 
 // VALIDATION 4 > user or clothing id format, each time _id is accessed (req.body)
 
@@ -103,4 +98,5 @@ const validateCreateUser = celebrate({
 module.exports = {
   validateCreateClothingItem,
   validateCreateUser,
+  validateLogin,
 };
