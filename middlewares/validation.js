@@ -19,7 +19,7 @@ const validateURL = (value, helpers) => {
 //   }),
 // });
 
-// VALIDATION HELPER 3 > Authorization Header starts with Bearere
+// Authorization Header starts with "Bearer "
 
 const validateAuthorizationHeader = (value, helpers) => {
   if (value.startsWith("Bearer ")) {
@@ -30,18 +30,7 @@ const validateAuthorizationHeader = (value, helpers) => {
 
 // ----------------- VALIDATION FUNCTIONS -------------------
 
-// VALIDATION > createClothingItem (req.body)
-
-// const { name, weather, imageUrl } = req.body;
-// owner: req.user._id
-
-// headers: {
-//     "Content-type": "application/json",
-//     authorization: `Bearer ${localStorage.getItem("jwt")}`,
-//   },
-
-// The item name is a required string of between 2 and 30 characters.
-// An image URL is a required string in a URL format.
+// Validation request for CreateClothingItem
 
 const validateCreateClothingItem = celebrate({
   // body: name is required and has 2-30 chars, imageURL is a valid url
@@ -49,7 +38,7 @@ const validateCreateClothingItem = celebrate({
     name: Joi.string().required().min(2).max(30),
     imageUrl: Joi.string().required().custom(validateURL).messages({
       "string.empty": "The Image field, with an image URL, is required",
-      "string.uri": "The Image URL is not valid",
+      "string.uri": "The Image URL is not a valid url",
     }),
     weather: Joi.string().valid("hot", "warm", "cold").required().messages({
       "string.empty": "Weather type missing",
@@ -63,6 +52,7 @@ const validateCreateClothingItem = celebrate({
       .required()
       .custom(validateAuthorizationHeader)
       .messages({
+        "string.empty": "Inbound user token missing",
         "string.token": "Inbound user token is not valid",
       }),
   }),
@@ -76,6 +66,24 @@ const validateCreateClothingItem = celebrate({
 // The user avatar is a required string in a URL format.
 // Email is a required string in a valid email format.
 // Password is a required string.
+
+const validateCreateUser = celebrate({
+  // body: name is required and has 2-30 chars, imageURL is a valid url
+  body: Joi.object().keys({
+    name: Joi.string().required().min(2).max(30),
+    avatar: Joi.string().required().custom(validateURL).messages({
+      "string.empty": "The Avatar URL field is required",
+      "string.uri": "The Avatar URL is not a valid url",
+    }),
+    email: Joi.string().required().email().messages({
+      "string.empty": "The Avatar URL field is required",
+      "string.email": "The email provided is a valid email",
+    }),
+    password: Joi.string().required().messages({
+      "string.empty": "The password field is required",
+    }),
+  }),
+});
 
 // REMEMBER avatar is optional!!
 
@@ -94,4 +102,5 @@ const validateCreateClothingItem = celebrate({
 
 module.exports = {
   validateCreateClothingItem,
+  validateCreateUser,
 };
