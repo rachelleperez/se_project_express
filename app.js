@@ -31,6 +31,13 @@ app.use(cors());
 app.use(express.json());
 app.use(requestLogger); // before all route handlers
 
+// prepare for crashes, remove after the review
+app.get("/crash-test", () => {
+  setTimeout(() => {
+    throw new Error("Server will crash now");
+  }, 0);
+});
+
 // import routes that don't need auth middleware
 app.post("/signin", login);
 app.post("/signup", validateCreateUser, createUser);

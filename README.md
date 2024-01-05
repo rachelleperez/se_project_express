@@ -1,6 +1,6 @@
 # WTWR (What to Wear?): Back End
 
-This repository contains the back-end portion of the What to Wear (WTWR) application found [HERE](https://github.com/rachelleperez/se_project_react). The application outputs the weather and appropriate clothing item recommendations based on a specific location.
+This repository contains the back-end portion of the What to Wear (WTWR) application found [HERE](https://github.com/rachelleperez/se_project_react) with can be found in [wtwr.soon.it](https://wtwr.soon.it/). The application outputs the weather and appropriate clothing item recommendations based on a specific location.
 
 This back-end portion represents the server side of the app which receives and processes API calls related to:
 
