@@ -36,9 +36,12 @@ module.exports.createUser = (req, res, next) => {
             }); // don't return password
           })
           // if it reaches catch below, it was a validation error
-          .catch(() => {
-            // console.log("Error from inner catch", err);
-            throw new BadRequestError(ERROR_MSG.validation);
+          .catch((err) => {
+            if (err.name === "ValidationError") {
+              next(new BadRequestError(ERROR_MSG.validation));
+            } else {
+              next(err);
+            }
           })
       );
     })
