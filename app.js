@@ -14,7 +14,7 @@ const { getClothingItems } = require("./controllers/clothingItems");
 
 const {
   validateCreateUser,
-  // validateLogin,
+  validateLogin,
 } = require("./middlewares/validation");
 const errorHandler = require("./middlewares/error-handler");
 
@@ -41,7 +41,7 @@ app.get("/crash-test", () => {
 });
 
 // import routes that don't need auth middleware
-app.post("/signin", login);
+app.post("/signin", validateLogin, login);
 app.post("/signup", validateCreateUser, createUser);
 app.get("/items", getClothingItems);
 
