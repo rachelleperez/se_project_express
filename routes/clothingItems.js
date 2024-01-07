@@ -9,7 +9,7 @@ const {
 
 const {
   validateCreateClothingItem,
-  validateId,
+  validateItemId,
 } = require("../middlewares/validation");
 
 // CRUD
@@ -21,12 +21,12 @@ router.post("/", validateCreateClothingItem, createClothingItem);
 // router.get("/", getClothingItems); // spec: do not protect with auth
 
 // Update: Add like
-router.put("/:itemId/likes", validateId, likeClothingItem);
+router.put("/:itemId/likes", validateItemId, likeClothingItem);
 
 // Delete - Clothing Item
-router.delete("/:itemId", validateId, deleteClothingItem);
+router.delete("/:itemId", validateItemId, deleteClothingItem);
 
 // Delete - Like
-router.delete("/:itemId/likes", validateId, dislikeClothingItem);
+router.delete("/:itemId/likes", validateItemId, dislikeClothingItem);
 
 module.exports = router;
