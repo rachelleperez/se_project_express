@@ -82,9 +82,24 @@ const validateId = celebrate({
   // .or("itemId", "userId"), // either should be present
 });
 
+const validateUpdateCurrentUser = celebrate({
+  // body: name is required and has 2-30 chars, avatar could be empty as there is a placeholder version when so
+  body: Joi.object().keys({
+    name: Joi.string().required().min(2).max(30).messages({
+      "string.empty": "The name field is required",
+      "string.min": "The name must have at least 2 characters",
+      "string.max": "The name must have at max 30 characters",
+    }),
+    avatar: Joi.string().custom(validateURL).messages({
+      "string.uri": "The Avatar URL is not a valid url",
+    }),
+  }),
+});
+
 module.exports = {
   validateCreateClothingItem,
   validateCreateUser,
   validateLogin,
   validateId,
+  validateUpdateCurrentUser,
 };
