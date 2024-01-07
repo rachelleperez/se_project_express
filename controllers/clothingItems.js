@@ -18,7 +18,14 @@ module.exports.createClothingItem = (req, res, next) => {
       // console.log(item);
       res.status(201).send(item);
     })
-    .catch(() => next(new BadRequestError(ERROR_MSG.validation)));
+    .catch((err) => {
+      // check for wrong id first
+      if (err.name === "ValidationError") {
+        next(new BadRequestError(ERROR_MSG.validation));
+      } else {
+        next(err);
+      }
+    });
 };
 
 module.exports.getClothingItems = (req, res, next) => {
