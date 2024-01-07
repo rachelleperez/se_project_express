@@ -68,12 +68,13 @@ module.exports.likeClothingItem = (req, res, next) => {
     )
     .orFail()
     .then((item) => res.send(item))
-    .catch((e) => {
-      // if user found, then validation error
-      if (e.name === "DocumentNotFoundError") {
+    .catch((err) => {
+      if (err.name === "ValidationError" || err.name === "CastError") {
+        next(new BadRequestError(ERROR_MSG.validation));
+      } else if (err.name === "DocumentNotFoundError") {
         next(new NotFoundError(ERROR_MSG.unknownItemId));
       } else {
-        next(new BadRequestError(ERROR_MSG.validation));
+        next(err);
       }
     });
 };
@@ -87,12 +88,13 @@ module.exports.dislikeClothingItem = (req, res, next) => {
     )
     .orFail()
     .then((item) => res.send(item))
-    .catch((e) => {
-      // if user found, then validation error
-      if (e.name === "DocumentNotFoundError") {
+    .catch((err) => {
+      if (err.name === "ValidationError" || err.name === "CastError") {
+        next(new BadRequestError(ERROR_MSG.validation));
+      } else if (err.name === "DocumentNotFoundError") {
         next(new NotFoundError(ERROR_MSG.unknownItemId));
       } else {
-        next(new BadRequestError(ERROR_MSG.validation));
+        next(err);
       }
     });
 };
