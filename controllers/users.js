@@ -100,12 +100,13 @@ module.exports.updateCurrentUser = (req, res, next) => {
     )
     .orFail()
     .then((userData) => res.send(userData))
-    .catch((e) => {
-      // if not validation error, then user not found
-      if (e.name !== "ValidationError") {
-        next(new NotFoundError(ERROR_MSG.unknownUserId));
-      } else {
+    .catch((err) => {
+      if (err.name === "ValidationError" || err.name === "CastError") {
         next(new BadRequestError(ERROR_MSG.validation));
+      } else if (err.name === "DocumentNotFoundError") {
+        next(new NotFoundError(ERROR_MSG.unknownItemId));
+      } else {
+        next(err);
       }
     });
 };
