@@ -52,7 +52,6 @@ module.exports.createUser = (req, res, next) => {
 };
 
 module.exports.login = (req, res, next) => {
-  console.log("LOGGED IN");
   const { email, password } = req.body;
 
   // const args_missing = false;
