@@ -77,8 +77,12 @@ module.exports.getCurrentUser = (req, res, next) => {
     .then((userData) => {
       res.send(userData);
     })
-    .catch(() => {
-      next(new NotFoundError(ERROR_MSG.unknownUserId));
+    .catch((err) => {
+      if (err.name === "DocumentNotFoundError") {
+        next(new NotFoundError(ERROR_MSG.unknownItemId));
+      } else {
+        next(err);
+      }
     });
 };
 
