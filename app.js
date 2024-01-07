@@ -31,7 +31,7 @@ const routes = require("./routes");
 
 app.use(cors());
 app.use(express.json());
-app.use(requestLogger); // before all route handlers
+app.use(requestLogger); // add logger before all route handlers
 
 // prepare for crashes, remove after the review
 app.get("/crash-test", () => {
